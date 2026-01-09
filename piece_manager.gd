@@ -1,5 +1,7 @@
 extends Node2D
 
+signal piece_drag_ended(piece: Piece2D)
+
 const PIECE_SCENE = preload("res://piece_2d.tscn")
 var pieces = {}
 
@@ -9,8 +11,7 @@ func spawn_piece(color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i):
   var piece = PIECE_SCENE.instantiate()
   add_child(piece)
   
-  var pos = board.grid_to_local(grid_pos)
-  piece.setup(color, type, grid_pos, pos)
+  piece.setup(color, type, grid_pos)
   
   pieces[grid_pos] = piece
 
@@ -27,3 +28,16 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
   pass
+
+
+func _on_piece_drag_ended(piece: Piece2D) -> void:
+  var color = piece.color
+  var type = piece.type
+  var grid_pos = piece.grid_position
+  var pos = piece.position
+  
+  pieces.erase(grid_pos)
+  remove_child(piece)
+  
+  var new_grid_pos = board.global_to_grid(pos)
+  spawn_piece(color, type, new_grid_pos)

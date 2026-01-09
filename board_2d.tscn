@@ -42,3 +42,5 @@ script = ExtResource("2_irr5h")
 
 [node name="Piece_Manager" type="Node2D" parent="."]
 script = ExtResource("5_om8fv")
+
+[connection signal="piece_drag_ended" from="Piece_Manager" to="Piece_Manager" method="_on_piece_drag_ended"]
