@@ -1,18 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://i5yadx4rd5pt"]
+[gd_scene load_steps=5 format=3 uid="uid://i5yadx4rd5pt"]
 
-[ext_resource type="Texture2D" uid="uid://c6r64xdcjfh7s" path="res://assets/white_pawn.svg" id="1_xuuw4"]
+[ext_resource type="Script" uid="uid://0bgnk8hslta0" path="res://piece_2d.gd" id="1_tlekb"]
+[ext_resource type="Texture2D" uid="uid://bvrykx2ibt26e" path="res://assets/chess_pieces_sprite.svg" id="2_qeb0b"]
+[ext_resource type="Script" uid="uid://c2tpgophbuyy6" path="res://piece_sprite.gd" id="3_8aoqx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdjlj"]
 size = Vector2(100, 100)
 
 [node name="Piece_2d" type="Area2D"]
+script = ExtResource("1_tlekb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(50, -50)
 shape = SubResource("RectangleShape2D_wdjlj")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="piece_sprite" type="Sprite2D" parent="."]
 position = Vector2(-1.9073486e-06, -99.99999)
 scale = Vector2(2.2222223, 2.222222)
-texture = ExtResource("1_xuuw4")
+texture = ExtResource("2_qeb0b")
 centered = false
+hframes = 6
+vframes = 2
+region_rect = Rect2(0, 0, 45, 45)
+region_filter_clip_enabled = true
+script = ExtResource("3_8aoqx")
