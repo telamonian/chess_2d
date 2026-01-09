@@ -1,7 +1,16 @@
 extends Area2D
+
 @onready var sprite = $piece_sprite
 
-func setup(color: Enum.Pcolor, type: Enum.Ptype, pos: Vector2):
+var color: Enum.Pcolor
+var type: Enum.Ptype
+var grid_position: Vector2i
+
+func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i, pos: Vector2):
+  color = c
+  type = t
+  grid_position = grid_pos
+  
   sprite.setup(color, type)
   position = pos
 

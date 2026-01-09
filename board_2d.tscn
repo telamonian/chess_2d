@@ -1,28 +1,44 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgg65ymwya6wq"]
+[gd_scene load_steps=11 format=3 uid="uid://cgg65ymwya6wq"]
 
 [ext_resource type="Texture2D" uid="uid://npalm2xf6l77" path="res://assets/black_128x128.png" id="1_1xhu3"]
+[ext_resource type="Script" uid="uid://cddp6edy4jvxx" path="res://board_2d.gd" id="1_x677m"]
 [ext_resource type="Texture2D" uid="uid://bryudrl01ln43" path="res://assets/white_128x128.png" id="2_fr5py"]
-[ext_resource type="Script" uid="uid://brxo4e1mpwq8c" path="res://init_board.gd" id="2_irr5h"]
+[ext_resource type="Script" uid="uid://brxo4e1mpwq8c" path="res://board_tmlayer.gd" id="2_irr5h"]
+[ext_resource type="Texture2D" uid="uid://d3ljg6gtftac5" path="res://assets/brown_128x128.png" id="4_om8fv"]
+[ext_resource type="Script" uid="uid://c7gdqb78i37ci" path="res://piece_manager.gd" id="5_om8fv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x677m"]
 texture = ExtResource("1_1xhu3")
 texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
+0:0/0/custom_data_0 = true
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_om8fv"]
 texture = ExtResource("2_fr5py")
 texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j8d55"]
+texture = ExtResource("4_om8fv")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+
 [sub_resource type="TileSet" id="TileSet_j8d55"]
 tile_size = Vector2i(128, 128)
+custom_data_layer_0/name = "isDark"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_x677m")
 sources/1 = SubResource("TileSetAtlasSource_om8fv")
+sources/2 = SubResource("TileSetAtlasSource_j8d55")
 
 [node name="Board_2d" type="Node2D"]
+script = ExtResource("1_x677m")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
+z_index = -10
 tile_set = SubResource("TileSet_j8d55")
 script = ExtResource("2_irr5h")
 
 [node name="Piece_Manager" type="Node2D" parent="."]
+script = ExtResource("5_om8fv")

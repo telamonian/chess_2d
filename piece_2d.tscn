@@ -5,22 +5,21 @@
 [ext_resource type="Script" uid="uid://c2tpgophbuyy6" path="res://piece_sprite.gd" id="3_8aoqx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdjlj"]
-size = Vector2(100, 100)
+size = Vector2(128, 128)
 
 [node name="Piece_2d" type="Area2D"]
 script = ExtResource("1_tlekb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(50, -50)
 shape = SubResource("RectangleShape2D_wdjlj")
 
 [node name="piece_sprite" type="Sprite2D" parent="."]
-position = Vector2(-1.9073486e-06, -99.99999)
-scale = Vector2(2.2222223, 2.222222)
+position = Vector2(-9.536743e-07, 1.9073486e-06)
+scale = Vector2(2.8444445, 2.8444445)
 texture = ExtResource("2_qeb0b")
-centered = false
 hframes = 6
 vframes = 2
+frame = 5
 region_rect = Rect2(0, 0, 45, 45)
 region_filter_clip_enabled = true
 script = ExtResource("3_8aoqx")
