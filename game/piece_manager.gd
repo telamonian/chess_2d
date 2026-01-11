@@ -33,7 +33,7 @@ func spawn_back(row: int, color: Enum.Pcolor):
 
   # bishops
   for i in [2, 5]:
-    spawn_piece(color, Enum.Ptype.KNIGHT, Vector2i(i, row))
+    spawn_piece(color, Enum.Ptype.BISHOP, Vector2i(i, row))
 
   # royals
   spawn_piece(color, Enum.Ptype.QUEEN, Vector2i(3, row))
