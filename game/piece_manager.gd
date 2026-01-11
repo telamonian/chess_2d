@@ -6,7 +6,7 @@ const PIECE_SCENE = preload("res://game/piece/piece_2d.tscn")
 
 var pieces: Dictionary[Vector2i, Piece2D] = {}
 
-@onready var board = get_parent()
+@onready var game = get_parent()
 
 func remove_piece(grid_pos: Vector2i):
   var piece: Piece2D = pieces.get(grid_pos)
@@ -19,7 +19,7 @@ func spawn_piece(color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i):
   var piece = PIECE_SCENE.instantiate()
   add_child(piece)
 
-  piece.setup(color, type, grid_pos)
+  piece.setup(color, type, grid_pos, game.board.grid_to_local(grid_pos))
   pieces[grid_pos] = piece
 
 func spawn_back(row: int, color: Enum.Pcolor):
@@ -44,6 +44,10 @@ func spawn_front(row: int, color: Enum.Pcolor):
   for i in range(8):
     spawn_piece(color, Enum.Ptype.PAWN, Vector2i(i, row))
 
+func spawn_pieces_for_player(player: Player2D):
+  spawn_back(player.row_back, player.color)
+  spawn_front(player.row_front, player.color)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   pass
@@ -58,7 +62,7 @@ func _on_piece_drag_ended(piece: Piece2D) -> void:
   var color = piece.color
   var type = piece.type
   var grid_pos = piece.grid_position
-  var new_grid_pos = board.global_to_grid(piece.position)
+  var new_grid_pos = game.board.global_to_grid(piece.position)
 
   if grid_pos != new_grid_pos and new_grid_pos in pieces:
     remove_piece(new_grid_pos)

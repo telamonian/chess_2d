@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://eviytf37l6wg"]
+
+[ext_resource type="PackedScene" uid="uid://cgg65ymwya6wq" path="res://game/board/board_2d.tscn" id="1_kt5uc"]
+[ext_resource type="Script" uid="uid://5u734353clku" path="res://game/game_2d.gd" id="1_luvuv"]
+[ext_resource type="Script" uid="uid://c7gdqb78i37ci" path="res://game/piece_manager.gd" id="2_w264a"]
+[ext_resource type="Script" uid="uid://clviav8qckj4k" path="res://game/player_manager.gd" id="4_bd2yl"]
+
+[node name="Game_2d" type="Node2D"]
+script = ExtResource("1_luvuv")
+
+[node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]
+
+[node name="Piece_manager" type="Node2D" parent="."]
+script = ExtResource("2_w264a")
+
+[node name="Player_manager" type="Node2D" parent="."]
+script = ExtResource("4_bd2yl")
+
+[connection signal="piece_drag_ended" from="Piece_manager" to="Piece_manager" method="_on_piece_drag_ended"]

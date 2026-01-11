@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="chess_2d"
-run/main_scene="uid://cgg65ymwya6wq"
+run/main_scene="uid://eviytf37l6wg"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
 [autoload]
 
 Enum="*res://enum.gd"
+Util="*res://utility.gd"
 
 [display]
 

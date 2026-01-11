@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cgg65ymwya6wq"]
+[gd_scene load_steps=10 format=3 uid="uid://cgg65ymwya6wq"]
 
 [ext_resource type="Texture2D" uid="uid://npalm2xf6l77" path="res://assets/black_128x128.png" id="1_1xhu3"]
 [ext_resource type="Script" uid="uid://cddp6edy4jvxx" path="res://game/board/board_2d.gd" id="1_x677m"]
 [ext_resource type="Texture2D" uid="uid://bryudrl01ln43" path="res://assets/white_128x128.png" id="2_fr5py"]
 [ext_resource type="Script" uid="uid://brxo4e1mpwq8c" path="res://game/board/board_tmlayer.gd" id="2_irr5h"]
 [ext_resource type="Texture2D" uid="uid://d3ljg6gtftac5" path="res://assets/brown_128x128.png" id="4_om8fv"]
-[ext_resource type="Script" uid="uid://c7gdqb78i37ci" path="res://game/board/piece_manager.gd" id="5_om8fv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x677m"]
 texture = ExtResource("1_1xhu3")
@@ -39,8 +38,3 @@ script = ExtResource("1_x677m")
 z_index = -10
 tile_set = SubResource("TileSet_j8d55")
 script = ExtResource("2_irr5h")
-
-[node name="Piece_Manager" type="Node2D" parent="."]
-script = ExtResource("5_om8fv")
-
-[connection signal="piece_drag_ended" from="Piece_Manager" to="Piece_Manager" method="_on_piece_drag_ended"]

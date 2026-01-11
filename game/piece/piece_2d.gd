@@ -10,7 +10,7 @@ var old_scale: Vector2
 
 var is_dragged: bool = false
 
-func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i):
+func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i, pos: Vector2):
   color = c
   type = t
   grid_position = grid_pos
@@ -18,7 +18,7 @@ func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i):
   old_scale = scale
 
   sprite.setup(color, type)
-  position = get_parent().board.grid_to_local(grid_pos)
+  position = pos
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
