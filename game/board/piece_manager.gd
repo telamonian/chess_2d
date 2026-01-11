@@ -2,7 +2,7 @@ extends Node2D
 
 signal piece_drag_ended(piece: Piece2D)
 
-const PIECE_SCENE = preload("res://piece_2d.tscn")
+const PIECE_SCENE = preload("res://game/piece/piece_2d.tscn")
 var pieces = {}
 
 @onready var board = get_parent()

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://i5yadx4rd5pt"]
 
-[ext_resource type="Script" uid="uid://0bgnk8hslta0" path="res://piece_2d.gd" id="1_tlekb"]
+[ext_resource type="Script" uid="uid://0bgnk8hslta0" path="res://game/piece/piece_2d.gd" id="1_tlekb"]
 [ext_resource type="Texture2D" uid="uid://bvrykx2ibt26e" path="res://assets/chess_pieces_sprite.svg" id="2_qeb0b"]
-[ext_resource type="Script" uid="uid://c2tpgophbuyy6" path="res://piece_sprite.gd" id="3_8aoqx"]
+[ext_resource type="Script" uid="uid://c2tpgophbuyy6" path="res://game/piece/piece_sprite.gd" id="3_8aoqx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdjlj"]
 size = Vector2(128, 128)
