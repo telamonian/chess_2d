@@ -14,9 +14,9 @@ func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i):
   color = c
   type = t
   grid_position = grid_pos
-  
+
   old_scale = scale
-  
+
   sprite.setup(color, type)
   position = get_parent().board.grid_to_local(grid_pos)
 
@@ -41,9 +41,8 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 func start_drag():
   is_dragged = true
   scale = Vector2(old_scale.x * 1.1, old_scale.y * 1.1)
-  
+
 func end_drag():
   scale = Vector2(old_scale)
   is_dragged = false
   get_parent().piece_drag_ended.emit(self)
-  

@@ -9,7 +9,7 @@ func set_color(color: Enum.Pcolor):
 
 func set_type(type: Enum.Ptype):
   frame_coords.x = type
-  
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   pass # Replace with function body.
