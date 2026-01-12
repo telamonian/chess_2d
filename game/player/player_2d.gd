@@ -80,6 +80,30 @@ func moves_rook(grid_pos: Vector2i) -> Array[Array]:
 
   return moves
 
+func moves_bishop(grid_pos: Vector2i) -> Array[Array]:
+  var file = grid_pos.x
+  var row = grid_pos.y
+  var moves: Array[Array] = []
+
+  for i in [-1, 1]:
+    var moves_positive_diagonal: Array[Vector2i] = []
+    var moves_negative_diagonal: Array[Vector2i] = []
+
+    for j in range(1, 8):
+        moves_positive_diagonal.append(Vector2i(file + i*j, row + i*j))
+        moves_negative_diagonal.append(Vector2i(file - i*j, row + i*j))
+
+    moves.append(moves_positive_diagonal)
+    moves.append(moves_negative_diagonal)
+
+  return moves
+
+func moves_queen(grid_pos: Vector2i) -> Array[Array]:
+  var moves = moves_rook(grid_pos)
+  moves.append_array(moves_bishop(grid_pos))
+  return moves
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   pass # Replace with function body.
