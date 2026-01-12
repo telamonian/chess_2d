@@ -15,12 +15,14 @@ func remove_piece(grid_pos: Vector2i):
   remove_child(piece)
   piece.queue_free()
 
-func spawn_piece(color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i):
+func spawn_piece(color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece2D:
   var piece = PIECE_SCENE.instantiate()
   add_child(piece)
 
   piece.setup(color, type, grid_pos, game.board.grid_to_local(grid_pos))
   pieces[grid_pos] = piece
+
+  return piece
 
 func spawn_back(row: int, color: Enum.Pcolor):
   # rooks
@@ -64,8 +66,11 @@ func _on_piece_drag_ended(piece: Piece2D) -> void:
   var grid_pos = piece.grid_position
   var new_grid_pos = game.board.global_to_grid(piece.position)
 
-  if grid_pos != new_grid_pos and new_grid_pos in pieces:
-    remove_piece(new_grid_pos)
+  if grid_pos != new_grid_pos:
+    # piece has actually moved
+    if new_grid_pos in pieces:
+      remove_piece(new_grid_pos)
 
-  remove_piece(grid_pos)
-  spawn_piece(color, type, new_grid_pos)
+    remove_piece(grid_pos)
+    var new_piece = spawn_piece(color, type, new_grid_pos)
+    new_piece.is_moved = true
