@@ -28,7 +28,18 @@ func _process(delta: float) -> void:
   pass
 
 func _on_piece_drag_started(piece: Piece2D):
-  highlights.add_highlight()
+  var player = get_parent().get_node("Player_manager").players[piece.color]
+  var raw_moves = player.get_moves(piece.type, piece.grid_position)
+  # TODO: add real move validation code
+  var moves: Array[Vector2i]
+  if piece.type in [Enum.Ptype.BISHOP, Enum.Ptype.ROOK, Enum.Ptype.QUEEN]:
+    for run in raw_moves:
+      for move in run:
+        moves.append(move)
+  else:
+    moves = raw_moves
+
+  highlights.add_highlight(moves)
 
 func _on_piece_drag_ended(piece: Piece2D):
   highlights.remove_highlight()

@@ -103,6 +103,21 @@ func moves_queen(grid_pos: Vector2i) -> Array[Array]:
   moves.append_array(moves_bishop(grid_pos))
   return moves
 
+func get_moves(type: Enum.Ptype, grid_pos: Vector2i):
+  match type:
+    Enum.Ptype.KING:
+      return moves_king(grid_pos)
+    Enum.Ptype.QUEEN:
+      return moves_queen(grid_pos)
+    Enum.Ptype.BISHOP:
+      return moves_bishop(grid_pos)
+    Enum.Ptype.KNIGHT:
+      return moves_knight(grid_pos)
+    Enum.Ptype.ROOK:
+      return moves_rook(grid_pos)
+    Enum.Ptype.PAWN:
+      return moves_pawn(grid_pos)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
