@@ -40,18 +40,6 @@ func squares_to_coords():
       for x in [-square_size.x/2.0, square_size.x/2.0]:
         horizontal_coords.append(Vector2(center.x + x, center.y + y))
 
-#func _ready() -> void:
-  #var tilemap_rect := tile_map.get_used_rect();
-  #var tilemap_cell_size := tile_map.tile_set.tile_size;
-#
-  #for y: int in range(0, tilemap_rect.size.y):
-    #horizontal_points.append(Vector2(0, y * tilemap_cell_size.y))
-    #horizontal_points.append(Vector2(tilemap_rect.size.x * tilemap_cell_size.x, y * tilemap_cell_size.y))
-#
-  #for x in range(0, tilemap_rect.size.x):
-    #vertical_points.append(Vector2(x * tilemap_cell_size.x, 0))
-    #vertical_points.append(Vector2(x * tilemap_cell_size.x, tilemap_rect.size.y * tilemap_cell_size.y))
-
 func _draw() -> void:
   draw_multiline(vertical_coords, grid_color, 10.0);
   draw_multiline(horizontal_coords, grid_color, 10.0);
