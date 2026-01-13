@@ -1,5 +1,6 @@
 extends Node2D
 
+signal piece_drag_started(piece: Piece2D)
 signal piece_drag_ended(piece: Piece2D)
 
 const PIECE_SCENE = preload("res://game/piece/piece_2d.tscn")
@@ -54,7 +55,7 @@ func spawn_pieces_for_player(player: Player2D):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-  pass
+  piece_drag_ended.connect(_on_piece_drag_ended)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

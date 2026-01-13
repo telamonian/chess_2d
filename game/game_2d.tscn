@@ -8,12 +8,10 @@
 [node name="Game_2d" type="Node2D"]
 script = ExtResource("1_luvuv")
 
-[node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]
-
 [node name="Piece_manager" type="Node2D" parent="."]
 script = ExtResource("2_w264a")
 
 [node name="Player_manager" type="Node2D" parent="."]
 script = ExtResource("4_bd2yl")
 
-[connection signal="piece_drag_ended" from="Piece_manager" to="Piece_manager" method="_on_piece_drag_ended"]
+[node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]

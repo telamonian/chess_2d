@@ -1,8 +1,8 @@
 extends Node2D
 
-@onready var board = $Board_2d
 @onready var player_man = $Player_manager
 @onready var piece_man = $Piece_manager
+@onready var board = $Board_2d
 
 func spawn_game():
   board.spawn_board()

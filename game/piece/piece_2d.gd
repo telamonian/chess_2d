@@ -47,6 +47,8 @@ func start_drag():
   sprite.material = highlight_material
   scale = Vector2(old_scale.x * 1.25, old_scale.y * 1.25)
 
+  get_parent().piece_drag_started.emit(self)
+
 func end_drag():
   scale = Vector2(old_scale)
   sprite.material = null
