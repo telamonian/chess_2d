@@ -26,7 +26,7 @@ func setup(c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i, pos: Vector2):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-  pass # Replace with function body.
+  input_event.connect(_on_input_event)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
