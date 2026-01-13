@@ -16,6 +16,8 @@ func remove_piece(grid_pos: Vector2i):
   piece.queue_free()
 
 func spawn_piece(color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece2D:
+  # need to use PIECE_SCENE.instantiate() here instead of eg Piece2D.new()
+  # see: https://www.reddit.com/r/godot/comments/17o1mkz/comment/k7vhc0m
   var piece = PIECE_SCENE.instantiate()
   add_child(piece)
 

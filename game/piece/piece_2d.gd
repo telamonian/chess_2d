@@ -1,6 +1,8 @@
 extends Area2D
 class_name Piece2D
 
+var highlight_material = load("res://game/piece/highlight.material")
+
 @onready var sprite = $piece_sprite
 
 var color: Enum.Pcolor
@@ -42,9 +44,12 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 
 func start_drag():
   is_dragged = true
-  scale = Vector2(old_scale.x * 1.1, old_scale.y * 1.1)
+  sprite.material = highlight_material
+  scale = Vector2(old_scale.x * 1.25, old_scale.y * 1.25)
 
 func end_drag():
   scale = Vector2(old_scale)
+  sprite.material = null
   is_dragged = false
+
   get_parent().piece_drag_ended.emit(self)
