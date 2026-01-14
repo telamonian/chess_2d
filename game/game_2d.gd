@@ -5,7 +5,7 @@ extends Node2D
 @onready var board = $Board_2d
 
 func spawn_game():
-  board.spawn_board()
+  board.spawn_board(8, 8)
 
   player_man.spawn_player(0, Enum.Pcolor.WHITE)
   player_man.spawn_player(1, Enum.Pcolor.BLACK)

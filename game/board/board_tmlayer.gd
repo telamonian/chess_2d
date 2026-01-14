@@ -1,21 +1,24 @@
 extends TileMapLayer
 
-const FILES = 8
-const ROWS = 8
-
 const DARK_SQUARE = Vector2i(0, 0)
 const DARK_SQUARE_SOURCE = 2
 const LIGHT_SQUARE = Vector2i(0, 0)
 const LIGHT_SQUARE_SOURCE = 1
 
-func spawn_board():
+var FILES: int
+var ROWS: int
+
+func spawn_board(files: int, rows: int):
+  FILES = files
+  ROWS = rows
+
   for file in range(FILES):
     for row in range(ROWS):
       var parity = (file % 2 + row % 2) % 2
       var square = LIGHT_SQUARE if parity else DARK_SQUARE
       var source = LIGHT_SQUARE_SOURCE if parity else DARK_SQUARE_SOURCE
 
-      var inverse_row = 7 - row
+      var inverse_row = ROWS - 1 - row
       # use inverse row to paint the squares bottom-to-top
       set_cell(Vector2(file, inverse_row), source, square)
 

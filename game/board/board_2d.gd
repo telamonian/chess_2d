@@ -1,11 +1,17 @@
 extends Node2D
 class_name Board2D
 
+var FILES: int
+var ROWS: int
+
 @onready var tmlayer = $TileMapLayer
 @onready var highlights = $Highlights
 
-func spawn_board():
-  tmlayer.spawn_board()
+func spawn_board(files: int, rows: int):
+  FILES = files
+  ROWS = rows
+
+  tmlayer.spawn_board(FILES, ROWS)
 
 func grid_to_local(grid_pos: Vector2i) -> Vector2:
   return tmlayer.grid_to_local(grid_pos)
@@ -28,8 +34,8 @@ func _process(delta: float) -> void:
   pass
 
 func _on_piece_drag_started(piece: Piece2D):
-  var player = get_parent().get_node("Player_manager").players[piece.color]
-  var raw_moves = player.get_moves(piece.type, piece.grid_position)
+  var player = get_parent().get_node("Player_manager").players[piece.player_id]
+  var raw_moves = piece.get_moves(player)
   # TODO: add real move validation code
   var moves: Array[Vector2i]
   if piece.type in [Enum.Ptype.BISHOP, Enum.Ptype.ROOK, Enum.Ptype.QUEEN]:
