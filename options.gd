@@ -42,8 +42,3 @@ func get_option_by_name(name: String) -> Option:
 
 func get_option_by_section(section: String, name: String) -> Option:
   return by_section[section][name]
-
-#var defaults = {
-  #"piece_highlight": Option.new("game", "piece_highlight", Color(0, 0, 0, 0)),
-  #"square_highlight": Option.new("game", "square_highlight", Color(1.0, 1.0, 0.259, 1.0)),
-#}
