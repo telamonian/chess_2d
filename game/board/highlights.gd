@@ -1,7 +1,5 @@
 extends Node2D
 
-#preload("res://game/board/highlight.gd")
-
 func add_highlight(squares: Array[Vector2i]):
   var highlight = BoardHighlight.new(squares, Color(1.0, 1.0, 0.259, 1.0), get_parent().tmlayer)
   add_child(highlight)

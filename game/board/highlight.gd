@@ -3,17 +3,17 @@ extends Node2D
 class_name BoardHighlight
 
 @export var tile_map: TileMapLayer:
-  set (x):
+  set(x):
     tile_map = x
     queue_redraw()
 
 @export var grid_color: Color:
-  set (x):
+  set(x):
     grid_color = x
     queue_redraw()
 
 @export var squares: Array[Vector2i]:
-  set (x):
+  set(x):
     squares = x
     squares_to_coords()
     queue_redraw()

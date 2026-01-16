@@ -52,12 +52,6 @@ func moves_pawn(player: Player2D) -> Array[Vector2i]:
   var row = grid_position.y
 
   return [Vector2i(file, row + 1*player.pawn_dir)]
-  #return [
-    #Vector2i(file, row + 1*pawn_dir),
-    #Vector2i(file + 1, row + 1*pawn_dir),
-    #Vector2i(file - 1, row + 1*pawn_dir),
-    #Vector2i(file, row + 2*pawn_dir)
-  #]
 
 func moves_knight() -> Array[Vector2i]:
   var file = grid_position.x
@@ -93,8 +87,8 @@ func moves_rook() -> Array[Array]:
     var moves_row: Array[Vector2i] = []
 
     for j in range(1, 8):
-        moves_file.append(Vector2i(file, row + i*j))
-        moves_row.append(Vector2i(file + i*j, row))
+      moves_file.append(Vector2i(file, row + i*j))
+      moves_row.append(Vector2i(file + i*j, row))
 
     moves.append(moves_file)
     moves.append(moves_row)
@@ -111,8 +105,8 @@ func moves_bishop() -> Array[Array]:
     var moves_negative_diagonal: Array[Vector2i] = []
 
     for j in range(1, 8):
-        moves_positive_diagonal.append(Vector2i(file + i*j, row + i*j))
-        moves_negative_diagonal.append(Vector2i(file - i*j, row + i*j))
+      moves_positive_diagonal.append(Vector2i(file + i*j, row + i*j))
+      moves_negative_diagonal.append(Vector2i(file - i*j, row + i*j))
 
     moves.append(moves_positive_diagonal)
     moves.append(moves_negative_diagonal)

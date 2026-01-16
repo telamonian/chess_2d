@@ -19,6 +19,7 @@ config/icon="res://assets/icon.svg"
 
 Enum="*res://enum.gd"
 Util="*res://utility.gd"
+Opt="*res://options.gd"
 
 [display]
 
