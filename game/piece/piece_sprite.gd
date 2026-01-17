@@ -2,12 +2,11 @@ extends Sprite2D
 
 const highlight_material = preload("res://game/piece/highlight.material")
 
-var highlight_material_color_opt: Opt.Option = Opt.set_option("game", "piece_highlight", Color(1.0, 0.071, 0.263, 1.0)) #highlight_material.get_shader_parameter("Color")) # Color(0, 0, 0, 0))
-
 func _set_highlight_material_color(opt: Opt.Option):
   highlight_material.set_shader_parameter("color", opt.value)
 
 func setup(color: Enum.Pcolor, type: Enum.Ptype):
+  var highlight_material_color_opt: Opt.Option = Opt.get_option_by_section("game", "piece_highlight")
   _set_highlight_material_color(highlight_material_color_opt)
   highlight_material_color_opt.changed.connect(_set_highlight_material_color)
 
