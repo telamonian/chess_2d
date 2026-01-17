@@ -35,9 +35,7 @@ class Option:
   func reset():
     value = _default
 
-func set_defaults():
-  for d in defaults:
-    set_option(d[0], d[1], d[2])
+func _init():
   load_config()
 
 func set_option(section: String, name: String, default) -> Option:
@@ -52,6 +50,10 @@ func set_option(section: String, name: String, default) -> Option:
 
   return option
 
+func set_option_value(section: String, name: String, value):
+  get_option_by_section(section, name).value = value
+  save_config()
+
 func get_option_by_name(name: String) -> Option:
   return by_name[name]
 
@@ -61,14 +63,21 @@ func get_option_by_section(section: String, name: String) -> Option:
 func load_config() -> bool:
   var config = ConfigFile.new()
   var err = config.load(OPTIONS_FILE)
-  if err != OK:
-    print_debug("Creating user preference file at: " + OPTIONS_FILE)
+  if err == OK:
+    for d in defaults:
+      if config.has_section_key(d[0], d[1]):
+        set_option(d[0], d[1], config.get_value(d[0], d[1]))
+      else:
+        set_option(d[0], d[1], d[2])
+    print_debug("updating user preference file at: " + OPTIONS_FILE)
+    save_config()
+    return true
+  else:
+    for d in defaults:
+      set_option(d[0], d[1], d[2])
+    print_debug("creating user preference file at: " + OPTIONS_FILE)
     save_config()
     return false
-  else:
-    for o in by_name.values():
-      o.value = config.get_value(o.section, o.name, o.value)
-    return true
 
 func save_config():
   var config = ConfigFile.new()

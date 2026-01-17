@@ -15,7 +15,6 @@ func spawn_game():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-  Opt.set_defaults()
   spawn_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
