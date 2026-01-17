@@ -2,8 +2,6 @@
 extends Node2D
 class_name BoardHighlight
 
-#var square_highlight_color_opt: Opt.Option = Opt.set_option("game", "square_highlight", Color(1.0, .5, 0.259, 1.0))
-
 @export var tile_map: TileMapLayer:
   set(x):
     tile_map = x
@@ -27,9 +25,7 @@ var vertical_coords: PackedVector2Array;
 var horizontal_coords: PackedVector2Array;
 
 func _init(new_squares: Array[Vector2i], new_grid_color: Color, new_tile_map: TileMapLayer):
-  var square_highlight_color_opt: Opt.Option = Opt.by_section["game"]["square_highlight"]
-  _set_grid_color(square_highlight_color_opt)
-  square_highlight_color_opt.changed.connect(_set_grid_color)
+  Opt.subscribe("game", "square_highlight", _set_grid_color)
 
   tile_map = new_tile_map
   squares = new_squares

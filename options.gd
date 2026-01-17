@@ -58,7 +58,7 @@ func get_option_by_name(name: String) -> Option:
 func get_option_by_section(section: String, name: String) -> Option:
   return by_section[section][name]
 
-func load_config():
+func load_config() -> bool:
   var config = ConfigFile.new()
   var err = config.load(OPTIONS_FILE)
   if err != OK:
@@ -78,3 +78,9 @@ func save_config():
 
   # Save it to a file (overwrite if already exists).
   config.save(OPTIONS_FILE)
+
+# connect a callback to the "changed" signal of an option, but run the callback once first
+func subscribe(section: String, name: String, callback: Callable):
+  var o = get_option_by_section(section, name)
+  callback.call(o)
+  o.changed.connect(callback)

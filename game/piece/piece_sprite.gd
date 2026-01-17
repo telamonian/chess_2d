@@ -6,9 +6,7 @@ func _set_highlight_material_color(opt: Opt.Option):
   highlight_material.set_shader_parameter("color", opt.value)
 
 func setup(color: Enum.Pcolor, type: Enum.Ptype):
-  var highlight_material_color_opt: Opt.Option = Opt.get_option_by_section("game", "piece_highlight")
-  _set_highlight_material_color(highlight_material_color_opt)
-  highlight_material_color_opt.changed.connect(_set_highlight_material_color)
+  Opt.subscribe("game", "piece_highlight", _set_highlight_material_color)
 
   set_color(color)
   set_type(type)
