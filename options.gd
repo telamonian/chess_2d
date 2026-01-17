@@ -38,6 +38,7 @@ class Option:
 func set_defaults():
   for d in defaults:
     set_option(d[0], d[1], d[2])
+  load_config()
 
 func set_option(section: String, name: String, default) -> Option:
   var option = Option.new(section, name, default)
