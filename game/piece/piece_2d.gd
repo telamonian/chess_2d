@@ -23,6 +23,11 @@ static func new_piece(player_id: int, color: Enum.Pcolor, type: Enum.Ptype, grid
 
   return new_piece
 
+func move(grid_pos: Vector2i, pos: Vector2):
+  grid_position = grid_pos
+  position = pos
+  is_moved = true
+
 func setup(pid: int, c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i, pos: Vector2):
   player_id = pid
   color = c

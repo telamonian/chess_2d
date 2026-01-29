@@ -75,7 +75,7 @@ func _on_piece_drag_started(piece: Piece2D):
         if move not in pieces or pieces[move].player_id != player.id:
           moves.append(move)
 
-  highlights.add_highlight(moves)
+  highlights.set_highlight(moves)
 
 func _on_piece_drag_ended(piece: Piece2D):
   highlights.remove_highlight()

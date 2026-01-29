@@ -1,11 +1,25 @@
 extends Node2D
 
+@warning_ignore("unused_signal")
 signal piece_drag_started(piece: Piece2D)
 signal piece_drag_ended(piece: Piece2D)
 
 var pieces: Dictionary[Vector2i, Piece2D] = {}
 
 @onready var game = get_parent()
+
+func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
+  var piece = pieces[grid_pos]
+
+  if grid_pos != new_grid_pos:
+    # piece has actually moved
+    if new_grid_pos in pieces:
+      # remove any pre-existing piece in new location
+      remove_piece(new_grid_pos)
+
+    pieces.erase(grid_pos)
+    piece.move(new_grid_pos, game.board.grid_to_local(new_grid_pos))
+    pieces[new_grid_pos] = piece
 
 func remove_piece(grid_pos: Vector2i):
   var piece: Piece2D = pieces.get(grid_pos)
@@ -61,17 +75,5 @@ func _process(delta: float) -> void:
 
 
 func _on_piece_drag_ended(piece: Piece2D) -> void:
-  var player_id = piece.player_id
-  var color = piece.color
-  var type = piece.type
-  var grid_pos = piece.grid_position
   var new_grid_pos = game.board.global_to_grid(piece.position)
-
-  if grid_pos != new_grid_pos:
-    # piece has actually moved
-    if new_grid_pos in pieces:
-      remove_piece(new_grid_pos)
-
-    remove_piece(grid_pos)
-    var new_piece = spawn_piece(player_id, color, type, new_grid_pos)
-    new_piece.is_moved = true
+  move_piece(piece.grid_position, new_grid_pos)

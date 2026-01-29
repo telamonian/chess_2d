@@ -24,9 +24,10 @@ func _set_grid_color(opt: Opt.Option):
 var vertical_coords: PackedVector2Array;
 var horizontal_coords: PackedVector2Array;
 
-func _init(new_squares: Array[Vector2i], new_grid_color: Color, new_tile_map: TileMapLayer):
+func _init(new_squares: Array[Vector2i], new_tile_map: TileMapLayer):
   Opt.subscribe("game", "square_highlight", _set_grid_color)
 
+  # tile_map needs to init first, since it's used in the setter for squares
   tile_map = new_tile_map
   squares = new_squares
 
