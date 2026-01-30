@@ -19,6 +19,7 @@ script = ExtResource("4_bd2yl")
 [node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]
 
 [node name="Settings_Button" type="Button" parent="."]
+z_index = 20
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
