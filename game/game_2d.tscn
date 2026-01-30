@@ -1,17 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://eviytf37l6wg"]
+[gd_scene load_steps=7 format=3 uid="uid://eviytf37l6wg"]
 
 [ext_resource type="PackedScene" uid="uid://cgg65ymwya6wq" path="res://game/board/board_2d.tscn" id="1_kt5uc"]
 [ext_resource type="Script" uid="uid://5u734353clku" path="res://game/game_2d.gd" id="1_luvuv"]
 [ext_resource type="Script" uid="uid://c7gdqb78i37ci" path="res://game/piece_manager.gd" id="2_w264a"]
 [ext_resource type="Script" uid="uid://clviav8qckj4k" path="res://game/player_manager.gd" id="4_bd2yl"]
+[ext_resource type="Texture2D" uid="uid://ybwh51t7hip6" path="res://assets/gear_icon.svg" id="5_ume8q"]
+[ext_resource type="Script" uid="uid://q5tyiq337eqo" path="res://game/settings_button.gd" id="6_t8shf"]
 
 [node name="Game_2d" type="Node2D"]
 script = ExtResource("1_luvuv")
 
-[node name="Piece_manager" type="Node2D" parent="."]
+[node name="Piece_Manager" type="Node2D" parent="."]
 script = ExtResource("2_w264a")
 
-[node name="Player_manager" type="Node2D" parent="."]
+[node name="Player_Manager" type="Node2D" parent="."]
 script = ExtResource("4_bd2yl")
 
 [node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]
+
+[node name="Settings_Button" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 959.0
+offset_top = 50.0
+offset_right = 1087.0
+offset_bottom = 178.0
+grow_horizontal = 0
+icon = ExtResource("5_ume8q")
+expand_icon = true
+script = ExtResource("6_t8shf")

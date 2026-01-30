@@ -26,7 +26,7 @@ func is_inbounds(grid_pos: Vector2i) -> bool:
   return 0 <= grid_pos.x and grid_pos.x < FILES and 0 <= grid_pos.y and grid_pos.y < ROWS
 
 func _ready() -> void:
-  var piece_man = get_parent().get_node("Piece_manager")
+  var piece_man = get_parent().get_node("Piece_Manager")
   piece_man.piece_drag_started.connect(_on_piece_drag_started)
   piece_man.piece_drag_ended.connect(_on_piece_drag_ended)
 
@@ -35,8 +35,8 @@ func _process(delta: float) -> void:
   pass
 
 func _on_piece_drag_started(piece: Piece2D):
-  var pieces = get_parent().get_node("Piece_manager").pieces
-  var player = get_parent().get_node("Player_manager").players[piece.player_id]
+  var pieces = get_parent().get_node("Piece_Manager").pieces
+  var player = get_parent().get_node("Player_Manager").players[piece.player_id]
   var raw_moves = piece.get_moves(player)
   var moves: Array[Vector2i]
 

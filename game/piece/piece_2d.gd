@@ -35,19 +35,19 @@ func setup(pid: int, c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i, pos: Vec
   grid_position = grid_pos
   old_scale = scale
 
-  $piece_sprite.setup(color, type)
+  $Piece_Sprite.setup(color, type)
   position = pos
 
 func start_drag():
   is_dragged = true
-  $piece_sprite.set_highlight()
+  $Piece_Sprite.set_highlight()
   scale = Vector2(old_scale.x * 1.25, old_scale.y * 1.25)
 
   get_parent().piece_drag_started.emit(self)
 
 func end_drag():
   scale = Vector2(old_scale)
-  $piece_sprite.unset_highlight()
+  $Piece_Sprite.unset_highlight()
   is_dragged = false
 
   get_parent().piece_drag_ended.emit(self)
