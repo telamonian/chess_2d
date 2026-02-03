@@ -38,7 +38,7 @@ class Option:
 func _init():
   load_config()
 
-func set_option(section: String, name: String, default) -> Option:
+func create_option(section: String, name: String, default) -> Option:
   var option = Option.new(section, name, default)
 
   by_name[option.name] = option
@@ -66,15 +66,15 @@ func load_config() -> bool:
   if err == OK:
     for d in defaults:
       if config.has_section_key(d[0], d[1]):
-        set_option(d[0], d[1], config.get_value(d[0], d[1]))
+        create_option(d[0], d[1], config.get_value(d[0], d[1]))
       else:
-        set_option(d[0], d[1], d[2])
+        create_option(d[0], d[1], d[2])
     print_debug("updating user preference file at: " + OPTIONS_FILE)
     save_config()
     return true
   else:
     for d in defaults:
-      set_option(d[0], d[1], d[2])
+      create_option(d[0], d[1], d[2])
     print_debug("creating user preference file at: " + OPTIONS_FILE)
     save_config()
     return false

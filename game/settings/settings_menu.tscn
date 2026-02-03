@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://cqd4o0ugygr6o"]
+[gd_scene load_steps=3 format=3 uid="uid://cqd4o0ugygr6o"]
+
+[ext_resource type="Script" uid="uid://c5knyjb4ealgn" path="res://game/settings/board_highlight_picker_button.gd" id="1_6lqao"]
+[ext_resource type="Script" uid="uid://d2oqy56mju0r5" path="res://game/settings/piece_highlight_picker_button.gd" id="2_jxxnr"]
 
 [node name="Settings_Menu" type="Control"]
 layout_mode = 3
@@ -24,9 +27,14 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.77254903)
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_right = 120
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
 layout_mode = 2
@@ -34,17 +42,38 @@ layout_mode = 2
 [node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "settings"
+horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="GridContainer" type="GridContainer" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="BoardHighlight_Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
-text = "square highlight color: "
+text = "board square highlight color: "
+horizontal_alignment = 2
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="BoardHighlight_PickerButton" type="ColorPickerButton" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(128, 32)
 layout_mode = 2
+icon_alignment = 1
+color = Color(0.7529412, 0.5803922, 0.5137255, 1)
+script = ExtResource("1_6lqao")
+
+[node name="PieceHighlight_Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "piece highlight color: "
+horizontal_alignment = 2
+
+[node name="PieceHighlight_PickerButton" type="ColorPickerButton" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(128, 32)
+layout_mode = 2
+icon_alignment = 1
+color = Color(0.7529412, 0.5803922, 0.5137255, 1)
+script = ExtResource("2_jxxnr")
