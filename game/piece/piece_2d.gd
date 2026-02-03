@@ -12,6 +12,13 @@ var old_scale: Vector2
 var is_moved: bool = false
 var is_dragged: bool = false
 
+var file:
+  get():
+    return grid_position.x
+var row:
+  get():
+    return grid_position.y
+
 # static constructor/instantiator
 # see: https://www.reddit.com/r/godot/comments/13pm5o5/comment/ktmmqp0
 static func new_piece(player_id: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i, pos: Vector2):

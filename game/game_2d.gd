@@ -27,22 +27,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var valid_moves = get_valid_moves(piece)
   match piece.type:
     Enum.Ptype.KING:
-      var valid_castling_moves: Array[Vector2i] = []
-      if not piece.is_moved:
-        # the king has not moved
-        for rgp in player_man.players[piece.color].rook_grid_positions:
-          if rgp in piece_man.pieces:
-            var maybe_rook = piece_man.pieces[rgp]
-            if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
-              # one of the same colored rooks has not moved
-              if grid_pos.x - rgp.x > 0:
-                # move the king 2 towards file 0
-                valid_castling_moves.append(Vector2i(grid_pos.x - 2, grid_pos.y))
-              elif grid_pos.x - rgp.x < 0:
-                # move the king 2 towards maximum file
-                valid_castling_moves.append(Vector2i(grid_pos.x + 2, grid_pos.y))
-      valid_moves.append_array(valid_castling_moves)
-
+      valid_moves.append_array(get_valid_castling_moves(piece))
     Enum.Ptype.PAWN:
       pass
 
@@ -98,8 +83,25 @@ func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
 
   return moves
 
+func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
+  var valid_castling_moves: Array[Vector2i] = []
+  if not piece.is_moved:
+    # the king has not moved
+    for rgp in player_man.players[piece.color].rook_grid_positions:
+      if rgp in piece_man.pieces:
+        var maybe_rook = piece_man.pieces[rgp]
+        if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
+          # one of the same colored rooks has not moved
+          var king_shift = -2 if piece.file - maybe_rook.file > 0 else 2
+          # move the king 2 towards the unmoved rook
+          valid_castling_moves.append(Vector2i(piece.file + king_shift, piece.row))
+  return valid_castling_moves
+
 func _on_piece_drag_started(piece: Piece2D):
   var valid_moves = get_valid_moves(piece)
+  match piece.type:
+    Enum.Ptype.KING:
+      valid_moves.append_array(get_valid_castling_moves(piece))
   board.highlights.set_highlight(valid_moves)
 
 func _on_piece_drag_ended(piece: Piece2D):
