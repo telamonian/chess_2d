@@ -12,7 +12,7 @@ var by_name: Dictionary[String, Option] = {}
 var by_section: Dictionary[String, Variant] = {}
 
 class Option:
-  signal changed(value)
+  signal changed
 
   var _default
   var section: String
@@ -23,7 +23,7 @@ class Option:
       return value
     set(x):
       value = x
-      changed.emit(x)
+      changed.emit()
 
   func _init(section: String, name: String, default):
     _default = default
@@ -91,5 +91,6 @@ func save_config():
 # connect a callback to the "changed" signal of an option, but run the callback once first
 func subscribe(section: String, name: String, callback: Callable):
   var o = get_option_by_section(section, name)
-  callback.call(o)
-  o.changed.connect(callback)
+  var callback_bound = callback.bind(o)
+  callback_bound.call()
+  o.changed.connect(callback_bound)
