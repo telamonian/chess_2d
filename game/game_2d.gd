@@ -18,10 +18,6 @@ func _ready() -> void:
   piece_man.piece_drag_started.connect(_on_piece_drag_started)
   piece_man.piece_drag_ended.connect(_on_piece_drag_ended)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-  pass
-
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var piece = piece_man.pieces[grid_pos]
   var player = player_man.players[piece.player_id]
@@ -94,6 +90,10 @@ func is_threatened(file: int, row: int, player_id: int) -> bool:
   # if no threats are found, return false
   return false
 
+func is_checked(player_id: int) -> bool:
+  var king = piece_man.kings[player_id]
+  return is_threatened(king.file, king.row, player_id)
+
 func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
   var pieces = piece_man.pieces
   var player = player_man.players[piece.player_id]
@@ -134,7 +134,30 @@ func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
         if move not in pieces or pieces[move].player_id != player.id:
           moves.append(move)
 
-  return moves
+  return filter_checked(piece, moves)
+
+#TODO: figure out a way to check checked without moving around the actual game pieces
+#TODO: add handling for getting out of check
+func filter_checked(piece: Piece2D, moves: Array[Vector2i]) -> Array[Vector2i]:
+  var player_id = piece.player_id
+  var filtered: Array[Vector2i] = []
+  var original_is_moved = piece.is_moved
+  var original_grid_pos = piece.grid_position
+  var buffer_grid_pos = Vector2i(-1, -1)
+
+  #for move in moves:
+    #piece_man.move_piece(current_grid_pos, move)
+    #current_grid_pos = move
+    #if not is_checked(player_id):
+      #filtered.append(move)
+
+  piece_man.move_piece(original_grid_pos, buffer_grid_pos)
+  if not is_checked(player_id):
+    filtered = moves
+
+  piece_man.move_piece(buffer_grid_pos, original_grid_pos)
+  piece.is_moved = original_is_moved
+  return filtered
 
 func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
   var pieces = piece_man.pieces
@@ -147,13 +170,13 @@ func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
         var maybe_rook = piece_man.pieces[rgp]
         if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
           # one of the same colored rooks has not moved
-          var king_shift = -1 if piece.file - maybe_rook.file > 0 else 1
-          if not range(piece.file + king_shift, maybe_rook.file, king_shift).any(func(file): return Vector2i(file, piece.row) in pieces):
+          var shift = -1 if piece.file - maybe_rook.file > 0 else 1
+          if not range(piece.file + shift, maybe_rook.file, shift).any(func(file): return Vector2i(file, piece.row) in pieces):
             # all of the spaces between the king and the rook are open
-            if not range(piece.file + king_shift, piece.file + 3*king_shift, king_shift).any(func(file): return is_threatened(file, piece.row, piece.player_id)):
+            if not range(piece.file + shift, piece.file + 3*shift, shift).any(func(file): return is_threatened(file, piece.row, piece.player_id)):
               # the king will not be moving through, or into, check
               # move the king 2 towards the unmoved rook
-              valid_castling_moves.append(Vector2i(piece.file + 2*king_shift, piece.row))
+              valid_castling_moves.append(Vector2i(piece.file + 2*shift, piece.row))
   return valid_castling_moves
 
 func _on_piece_drag_started(piece: Piece2D):

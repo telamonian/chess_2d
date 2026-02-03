@@ -5,6 +5,7 @@ signal piece_drag_started(piece: Piece2D)
 signal piece_drag_ended(piece: Piece2D)
 
 var pieces: Dictionary[Vector2i, Piece2D] = {}
+var kings: Dictionary[int, Piece2D] = {}
 
 @onready var game = get_parent()
 
@@ -25,6 +26,8 @@ func remove_piece(grid_pos: Vector2i):
   var piece: Piece2D = pieces.get(grid_pos)
 
   pieces.erase(grid_pos)
+  if piece.type == Enum.Ptype.KING:
+    kings.erase(piece.player_id)
   remove_child(piece)
   piece.queue_free()
 
@@ -53,7 +56,8 @@ func spawn_back(row: int, player_id: int, color: Enum.Pcolor):
 
   # royals
   spawn_piece(player_id, color, Enum.Ptype.QUEEN, Vector2i(3, row))
-  spawn_piece(player_id, color, Enum.Ptype.KING, Vector2i(4, row))
+  var king = spawn_piece(player_id, color, Enum.Ptype.KING, Vector2i(4, row))
+  kings[player_id] = king
 
 func spawn_front(row: int, player_id: int, color: Enum.Pcolor):
   # pawns
