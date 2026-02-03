@@ -59,15 +59,10 @@ func end_drag():
 
   get_parent().piece_drag_ended.emit(self)
 
-func moves_pawn(player: Player2D) -> Array[Vector2i]:
-  var file = grid_position.x
-  var row = grid_position.y
-
+static func moves_pawn(file: int, row: int, player: Player2D) -> Array[Vector2i]:
   return [Vector2i(file, row + 1*player.pawn_dir)]
 
-func moves_knight() -> Array[Vector2i]:
-  var file = grid_position.x
-  var row = grid_position.y
+static func moves_knight(file: int, row: int) -> Array[Vector2i]:
   var moves: Array[Vector2i] = []
 
   for i in [-2, 2]:
@@ -77,9 +72,7 @@ func moves_knight() -> Array[Vector2i]:
 
   return moves
 
-func moves_king() -> Array[Vector2i]:
-  var file = grid_position.x
-  var row = grid_position.y
+static func moves_king(file: int, row: int) -> Array[Vector2i]:
   var moves: Array[Vector2i] = []
 
   for i in [-1, 0, 1]:
@@ -89,9 +82,7 @@ func moves_king() -> Array[Vector2i]:
 
   return moves
 
-func moves_rook() -> Array[Array]:
-  var file = grid_position.x
-  var row = grid_position.y
+static func moves_rook(file: int, row: int) -> Array[Array]:
   var moves: Array[Array] = []
 
   for i in [-1, 1]:
@@ -107,9 +98,7 @@ func moves_rook() -> Array[Array]:
 
   return moves
 
-func moves_bishop() -> Array[Array]:
-  var file = grid_position.x
-  var row = grid_position.y
+static func moves_bishop(file: int, row: int) -> Array[Array]:
   var moves: Array[Array] = []
 
   for i in [-1, 1]:
@@ -125,25 +114,25 @@ func moves_bishop() -> Array[Array]:
 
   return moves
 
-func moves_queen() -> Array[Array]:
-  var moves = moves_rook()
-  moves.append_array(moves_bishop())
+static func moves_queen(file: int, row: int) -> Array[Array]:
+  var moves = moves_rook(file, row)
+  moves.append_array(moves_bishop(file, row))
   return moves
 
 func get_moves(player: Player2D):
   match type:
     Enum.Ptype.KING:
-      return moves_king()
+      return moves_king(file, row)
     Enum.Ptype.QUEEN:
-      return moves_queen()
+      return moves_queen(file, row)
     Enum.Ptype.BISHOP:
-      return moves_bishop()
+      return moves_bishop(file, row)
     Enum.Ptype.KNIGHT:
-      return moves_knight()
+      return moves_knight(file, row)
     Enum.Ptype.ROOK:
-      return moves_rook()
+      return moves_rook(file, row)
     Enum.Ptype.PAWN:
-      return moves_pawn(player)
+      return moves_pawn(file, row, player)
 
 func _ready() -> void:
   input_event.connect(_on_input_event)
