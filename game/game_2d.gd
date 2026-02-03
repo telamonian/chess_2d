@@ -25,6 +25,27 @@ func _process(delta: float) -> void:
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var piece = piece_man.pieces[grid_pos]
   var valid_moves = get_valid_moves(piece)
+  match piece.type:
+    Enum.Ptype.KING:
+      var valid_castling_moves: Array[Vector2i] = []
+      if not piece.is_moved:
+        # the king has not moved
+        for rgp in player_man.players[piece.color].rook_grid_positions:
+          if rgp in piece_man.pieces:
+            var maybe_rook = piece_man.pieces[rgp]
+            if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
+              # one of the same colored rooks has not moved
+              if grid_pos.x - rgp.x > 0:
+                # move the king 2 towards file 0
+                valid_castling_moves.append(Vector2i(grid_pos.x - 2, grid_pos.y))
+              elif grid_pos.x - rgp.x < 0:
+                # move the king 2 towards maximum file
+                valid_castling_moves.append(Vector2i(grid_pos.x + 2, grid_pos.y))
+      valid_moves.append_array(valid_castling_moves)
+
+    Enum.Ptype.PAWN:
+      pass
+
   if new_grid_pos in valid_moves:
     # the move is valid, finalize the move
     piece_man.move_piece(grid_pos, new_grid_pos)
