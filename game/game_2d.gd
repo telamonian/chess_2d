@@ -40,13 +40,64 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     piece.position = board.grid_to_local(grid_pos)
     return false
 
+func is_threatened(piece: Piece2D) -> bool:
+  var pieces = piece_man.pieces
+  var player = player_man.players[piece.player_id]
+
+  # check for pawn threats
+  for move in [
+    Vector2i(piece.file - 1, piece.row + player.pawn_dir),
+    Vector2i(piece.file + 1, piece.row + player.pawn_dir)
+  ]:
+    if board.is_inbound(move):
+      if move in pieces:
+        var potential_threat = pieces[move]
+        if potential_threat.color != player.color and potential_threat.type == Enum.Ptype.PAWN:
+          return true
+
+  # check for knight and king threats
+  for ptype in [Enum.Ptype.KNIGHT, Enum.Ptype.KING]:
+    for move in piece.moves_knight() if ptype == Enum.Ptype.KNIGHT else piece.moves_king():
+      if board.is_inbounds(move):
+        if move in pieces:
+          var potential_threat = pieces[move]
+          if potential_threat.color != player.color and potential_threat.type == ptype:
+            return true
+
+  # check for bishop, rook, and queen threats
+  for run in piece.moves_bishop():
+    for move in run:
+      if board.is_inbounds(move):
+        if move in pieces:
+          var potential_threat = pieces[move]
+          if potential_threat.color != player.color and potential_threat.type in [Enum.Ptype.BISHOP, Enum.Ptype.QUEEN]:
+            return true
+          else:
+            break
+        else:
+          break
+
+  for run in piece.moves_rook():
+    for move in run:
+      if board.is_inbounds(move):
+        if move in pieces:
+          var potential_threat = pieces[move]
+          if potential_threat.color == player.color and potential_threat.type in [Enum.Ptype.ROOK, Enum.Ptype.QUEEN]:
+            return true
+          else:
+            break
+        else:
+          break
+
+  # if no threats are found, return false
+  return false
+
 func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
   var pieces = piece_man.pieces
   var player = player_man.players[piece.player_id]
   var raw_moves = piece.get_moves(player)
   var moves: Array[Vector2i]
 
-  # TODO: cleanup move validation code
   if piece.type == Enum.Ptype.PAWN:
     var root_move = raw_moves[0]
     if board.is_inbounds(root_move) and root_move not in pieces:
@@ -92,6 +143,7 @@ func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
         var maybe_rook = piece_man.pieces[rgp]
         if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
           # one of the same colored rooks has not moved
+          #for file in range()
           var king_shift = -2 if piece.file - maybe_rook.file > 0 else 2
           # move the king 2 towards the unmoved rook
           valid_castling_moves.append(Vector2i(piece.file + king_shift, piece.row))
