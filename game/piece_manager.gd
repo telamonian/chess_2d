@@ -63,17 +63,3 @@ func spawn_front(row: int, player_id: int, color: Enum.Pcolor):
 func spawn_pieces_for_player(player: Player2D):
   spawn_back(player.row_back, player.id, player.color)
   spawn_front(player.row_front, player.id, player.color)
-
-## Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-  #piece_drag_ended.connect(_on_piece_drag_ended)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-  pass
-
-
-#func _on_piece_drag_ended(piece: Piece2D) -> void:
-  #var new_grid_pos = game.board.global_to_grid(piece.position)
-  #move_piece(piece.grid_position, new_grid_pos)
