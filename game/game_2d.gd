@@ -65,29 +65,18 @@ func is_threatened(file: int, row: int, player_id: int) -> bool:
             return true
 
   # check for bishop, rook, and queen threats
-  for run in Piece2D.moves_bishop(file, row):
-    for move in run:
-      if board.is_inbounds(move):
-        if move in pieces:
-          var potential_threat = pieces[move]
-          if potential_threat.color != player.color and potential_threat.type in [Enum.Ptype.BISHOP, Enum.Ptype.QUEEN]:
-            return true
-          else:
-            break
-      else:
-        break
-
-  for run in Piece2D.moves_rook(file, row):
-    for move in run:
-      if board.is_inbounds(move):
-        if move in pieces:
-          var potential_threat = pieces[move]
-          if potential_threat.color != player.color and potential_threat.type in [Enum.Ptype.ROOK, Enum.Ptype.QUEEN]:
-            return true
-          else:
-            break
-      else:
-        break
+  for ptype in [Enum.Ptype.BISHOP, Enum.Ptype.ROOK]:
+    for run in Piece2D.moves_bishop(file, row) if ptype == Enum.Ptype.BISHOP else Piece2D.moves_rook(file, row):
+      for move in run:
+        if board.is_inbounds(move):
+          if move in pieces:
+            var potential_threat = pieces[move]
+            if potential_threat.color != player.color and potential_threat.type in [ptype, Enum.Ptype.QUEEN]:
+              return true
+            else:
+              break
+        else:
+          break
 
   # if no threats are found, return false
   return false
