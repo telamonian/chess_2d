@@ -24,11 +24,24 @@ func _process(delta: float) -> void:
 
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var piece = piece_man.pieces[grid_pos]
+  var player = player_man.players[piece.player_id]
   var valid_moves = get_valid_moves(piece)
+
+  # special handling for castling, en passant, etc
   match piece.type:
     Enum.Ptype.KING:
-      valid_moves.append_array(get_valid_castling_moves(piece))
+      var valid_castling_moves = get_valid_castling_moves(piece)
+      if new_grid_pos in valid_castling_moves:
+        var shift = -1 if grid_pos.x - new_grid_pos.x > 0 else 1
+        var rook_grid_pos = player.rook_grid_positions[0 if shift == -1 else 1]
+        # position the rook next to the castled king, on the side closest to the king's original square
+        var new_rook_grid_pos = Vector2i(grid_pos.x + shift, rook_grid_pos.y)
+
+        piece_man.move_piece(grid_pos, new_grid_pos)
+        piece_man.move_piece(rook_grid_pos, new_rook_grid_pos)
+        return true
     Enum.Ptype.PAWN:
+      #TODO: add en passant handling
       pass
 
   if new_grid_pos in valid_moves:
