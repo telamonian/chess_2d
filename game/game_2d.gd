@@ -4,6 +4,10 @@ extends Node2D
 @onready var piece_man = $Piece_Manager
 @onready var board = $Board_2d
 
+#var player_man = get_node("Player_Manager")
+#var piece_man = get_node("Piece_Manager")
+#var board = get_node("Board_2d")
+
 func spawn_game():
   board.spawn_board(8, 8)
 
@@ -50,8 +54,9 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     return false
 
 func is_threatened(file: int, row: int, player_id: int) -> bool:
-  var pieces = piece_man.pieces
-  var player = player_man.players[player_id]
+  var pieces = get_node("Piece_Manager").pieces
+  var player = get_node("Player_Manager").players[player_id]
+  var board = get_node("Board_2d")
 
   # check for pawn threats
   for move in [
@@ -91,7 +96,7 @@ func is_threatened(file: int, row: int, player_id: int) -> bool:
   return false
 
 func is_checked(player_id: int) -> bool:
-  var king = piece_man.kings[player_id]
+  var king = get_node("Piece_Manager").kings[player_id]
   return is_threatened(king.file, king.row, player_id)
 
 func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
@@ -141,22 +146,37 @@ func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
 func filter_checked(piece: Piece2D, moves: Array[Vector2i]) -> Array[Vector2i]:
   var player_id = piece.player_id
   var filtered: Array[Vector2i] = []
-  var original_is_moved = piece.is_moved
-  var original_grid_pos = piece.grid_position
-  var buffer_grid_pos = Vector2i(-1, -1)
+  var grid_pos = piece.grid_position
+  #var original_is_moved = piece.is_moved
+  #var original_grid_pos = piece.grid_position
+  #var current_grid_pos = original_grid_pos
+  #var buffer_grid_pos = Vector2i(-1, -1)
 
-  #for move in moves:
-    #piece_man.move_piece(current_grid_pos, move)
+  for move in moves:
+    var dupe = duplicate(23)
+    var dupe_piece_man = dupe.get_node("Piece_Manager")
+    var dupe_player_man = dupe.get_node("Player_Manager")
+
+    dupe_piece_man.pieces = piece_man.pieces.duplicate_deep()
+    for pid in piece_man.kings.keys():
+      var king = piece_man.kings[pid]
+      dupe_piece_man.kings[pid] = dupe_piece_man.pieces[king.grid_position]
+    dupe_player_man.players = player_man.players.duplicate_deep()
+
+    #dupe.piece_man.move_piece(grid_pos, move)
+    dupe_piece_man.move_piece(grid_pos, move, true)
     #current_grid_pos = move
-    #if not is_checked(player_id):
-      #filtered.append(move)
+    if not dupe.is_checked(player_id):
+      filtered.append(move)
 
-  piece_man.move_piece(original_grid_pos, buffer_grid_pos)
-  if not is_checked(player_id):
-    filtered = moves
+    dupe.queue_free()
 
-  piece_man.move_piece(buffer_grid_pos, original_grid_pos)
-  piece.is_moved = original_is_moved
+  #piece_man.move_piece(original_grid_pos, buffer_grid_pos)
+  #if not is_checked(player_id):
+    #filtered = moves
+#
+  #piece_man.move_piece(buffer_grid_pos, original_grid_pos)
+  #piece.is_moved = original_is_moved
   return filtered
 
 func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:

@@ -7,9 +7,7 @@ signal piece_drag_ended(piece: Piece2D)
 var pieces: Dictionary[Vector2i, Piece2D] = {}
 var kings: Dictionary[int, Piece2D] = {}
 
-@onready var game = get_parent()
-
-func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
+func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i, detached: bool = false) -> void:
   var piece = pieces[grid_pos]
 
   if grid_pos != new_grid_pos:
@@ -19,7 +17,8 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
       remove_piece(new_grid_pos)
 
     pieces.erase(grid_pos)
-    piece.move(new_grid_pos, game.board.grid_to_local(new_grid_pos))
+    if not detached:
+      piece.move(new_grid_pos, get_parent().board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
 
 func remove_piece(grid_pos: Vector2i):
@@ -34,7 +33,7 @@ func remove_piece(grid_pos: Vector2i):
 func spawn_piece(player_id: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece2D:
   # need to use PIECE_SCENE.instantiate() or equivalent here instead of eg Piece2D.new()
   # see: https://www.reddit.com/r/godot/comments/17o1mkz/comment/k7vhc0m
-  var piece = Piece2D.new_piece(player_id, color, type, grid_pos, game.board.grid_to_local(grid_pos))
+  var piece = Piece2D.new_piece(player_id, color, type, grid_pos, get_parent().board.grid_to_local(grid_pos))
 
   add_child(piece)
   pieces[grid_pos] = piece
