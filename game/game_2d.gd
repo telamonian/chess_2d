@@ -13,10 +13,59 @@ func spawn_game():
   for player in player_man.players.values():
     piece_man.spawn_pieces_for_player(player)
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   spawn_game()
+  piece_man.piece_drag_started.connect(_on_piece_drag_started)
+  piece_man.piece_drag_ended.connect(_on_piece_drag_ended)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
   pass
+
+func _on_piece_drag_started(piece: Piece2D):
+  #var pieces = get_parent().get_node("Piece_Manager").pieces
+  #var player = get_parent().get_node("Player_Manager").players[piece.player_id]
+  var pieces = piece_man.pieces
+  var player = player_man.players[piece.player_id]
+  var raw_moves = piece.get_moves(player)
+  var moves: Array[Vector2i]
+
+  # TODO: cleanup move validation code
+  if piece.type == Enum.Ptype.PAWN:
+    var root_move = raw_moves[0]
+    if board.is_inbounds(root_move) and root_move not in pieces:
+      moves.append(root_move)
+
+      if not piece.is_moved:
+        var double_move = Vector2i(root_move.x, root_move.y + player.pawn_dir)
+        if board.is_inbounds(double_move) and double_move not in pieces:
+          moves.append(double_move)
+
+    for file_shift in [-1, 1]:
+      var attack = Vector2i(root_move.x + file_shift, root_move.y)
+      if board.is_inbounds(attack) and attack in pieces and pieces[attack].player_id != player.id:
+        moves.append(attack)
+
+  elif piece.type in [Enum.Ptype.BISHOP, Enum.Ptype.ROOK, Enum.Ptype.QUEEN]:
+      for run in raw_moves:
+        for move in run:
+          if board.is_inbounds(move):
+            if move not in pieces:
+              moves.append(move)
+            else:
+              if pieces[move].player_id != player.id:
+                moves.append(move)
+              break
+          else:
+            break
+
+  else:
+    for move in raw_moves:
+      if board.is_inbounds(move):
+        if move not in pieces or pieces[move].player_id != player.id:
+          moves.append(move)
+
+  board.highlights.set_highlight(moves)
+
+func _on_piece_drag_ended(piece: Piece2D):
+  board.highlights.remove_highlight()
