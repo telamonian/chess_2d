@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqd4o0ugygr6o"]
+[gd_scene load_steps=4 format=3 uid="uid://cqd4o0ugygr6o"]
 
 [ext_resource type="Script" uid="uid://c5knyjb4ealgn" path="res://game/settings/board_highlight_picker_button.gd" id="1_6lqao"]
 [ext_resource type="Script" uid="uid://d2oqy56mju0r5" path="res://game/settings/piece_highlight_picker_button.gd" id="2_jxxnr"]
+[ext_resource type="Script" uid="uid://crlallffrms2b" path="res://game/settings/reset_button.gd" id="3_17gsk"]
 
 [node name="Settings_Menu" type="Control"]
 layout_mode = 3
@@ -77,3 +78,20 @@ layout_mode = 2
 icon_alignment = 1
 color = Color(0.7529412, 0.5803922, 0.5137255, 1)
 script = ExtResource("2_jxxnr")
+
+[node name="BottomSpacerLeft" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="BottomSpacerRight" type="Control" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Reset_Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "reset defaults: "
+horizontal_alignment = 2
+
+[node name="Reset_Button" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "reset"
+script = ExtResource("3_17gsk")

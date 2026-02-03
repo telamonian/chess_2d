@@ -1,11 +1,14 @@
 extends ColorPickerButton
 
-var opt = Opt.get_option_by_section("game", "square_highlight")
+var opt_section = "game"
+var opt_name = "square_highlight"
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func set_button_color(opt: Opt.Option):
   color = opt.value
+
+func _ready() -> void:
+  Opt.subscribe(opt_section, opt_name, set_button_color)
   color_changed.connect(_on_color_changed)
 
 func _on_color_changed(new_color: Color):
-  Opt.set_option_value(opt.section, opt.name, new_color)
+  Opt.set_option_value(opt_section, opt_name, new_color)

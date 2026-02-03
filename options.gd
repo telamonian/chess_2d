@@ -55,15 +55,20 @@ func create_defaults() -> void:
   for d in defaults:
     create_option(d[0], d[1], d[2])
 
-func set_option_value(section: String, name: String, value):
-  get_option_by_section(section, name).value = value
-  save_config()
-
 func get_option_by_name(name: String) -> Option:
   return by_name[name]
 
 func get_option_by_section(section: String, name: String) -> Option:
   return by_section[section][name]
+
+func reset_options():
+  for o in by_name.values():
+    o.reset()
+  save_config()
+
+func set_option_value(section: String, name: String, value):
+  get_option_by_section(section, name).value = value
+  save_config()
 
 func load_config() -> bool:
   var config = ConfigFile.new()
