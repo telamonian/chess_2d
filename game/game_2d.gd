@@ -40,16 +40,16 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     piece.position = board.grid_to_local(grid_pos)
     return false
 
-func is_threatened(piece: Piece2D) -> bool:
+func is_threatened(file: int, row: int, player_id: int) -> bool:
   var pieces = piece_man.pieces
-  var player = player_man.players[piece.player_id]
+  var player = player_man.players[player_id]
 
   # check for pawn threats
   for move in [
-    Vector2i(piece.file - 1, piece.row + player.pawn_dir),
-    Vector2i(piece.file + 1, piece.row + player.pawn_dir)
+    Vector2i(file - 1, row + player.pawn_dir),
+    Vector2i(file + 1, row + player.pawn_dir)
   ]:
-    if board.is_inbound(move):
+    if board.is_inbounds(move):
       if move in pieces:
         var potential_threat = pieces[move]
         if potential_threat.color != player.color and potential_threat.type == Enum.Ptype.PAWN:
@@ -57,7 +57,7 @@ func is_threatened(piece: Piece2D) -> bool:
 
   # check for knight and king threats
   for ptype in [Enum.Ptype.KNIGHT, Enum.Ptype.KING]:
-    for move in piece.moves_knight() if ptype == Enum.Ptype.KNIGHT else piece.moves_king():
+    for move in Piece2D.moves_knight(file, row) if ptype == Enum.Ptype.KNIGHT else Piece2D.moves_king(file, row):
       if board.is_inbounds(move):
         if move in pieces:
           var potential_threat = pieces[move]
@@ -65,7 +65,7 @@ func is_threatened(piece: Piece2D) -> bool:
             return true
 
   # check for bishop, rook, and queen threats
-  for run in piece.moves_bishop():
+  for run in Piece2D.moves_bishop(file, row):
     for move in run:
       if board.is_inbounds(move):
         if move in pieces:
@@ -77,7 +77,7 @@ func is_threatened(piece: Piece2D) -> bool:
         else:
           break
 
-  for run in piece.moves_rook():
+  for run in Piece2D.moves_rook(file, row):
     for move in run:
       if board.is_inbounds(move):
         if move in pieces:
@@ -135,18 +135,23 @@ func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
   return moves
 
 func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
+  var pieces = piece_man.pieces
+
   var valid_castling_moves: Array[Vector2i] = []
-  if not piece.is_moved:
-    # the king has not moved
+  if not piece.is_moved and not is_threatened(piece.file, piece.row, piece.player_id):
+    # the king has not moved and is not in check
     for rgp in player_man.players[piece.color].rook_grid_positions:
       if rgp in piece_man.pieces:
         var maybe_rook = piece_man.pieces[rgp]
         if maybe_rook.type == Enum.Ptype.ROOK and not maybe_rook.is_moved:
           # one of the same colored rooks has not moved
-          #for file in range()
-          var king_shift = -2 if piece.file - maybe_rook.file > 0 else 2
-          # move the king 2 towards the unmoved rook
-          valid_castling_moves.append(Vector2i(piece.file + king_shift, piece.row))
+          var king_shift = -1 if piece.file - maybe_rook.file > 0 else 1
+          if not range(piece.file + king_shift, maybe_rook.file, king_shift).any(func(file): return Vector2i(file, piece.row) in pieces):
+            # all of the spaces between the king and the rook are open
+            if not range(piece.file + king_shift, piece.file + 3*king_shift, king_shift).any(func(file): return is_threatened(file, piece.row, piece.player_id)):
+              # the king will not be moving through, or into, check
+              # move the king 2 towards the unmoved rook
+              valid_castling_moves.append(Vector2i(piece.file + 2*king_shift, piece.row))
   return valid_castling_moves
 
 func _on_piece_drag_started(piece: Piece2D):
