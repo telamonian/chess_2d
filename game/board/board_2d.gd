@@ -16,8 +16,8 @@ func spawn_board(files: int, rows: int):
 func grid_to_local(grid_pos: Vector2i) -> Vector2:
   return tmlayer.grid_to_local(grid_pos)
 
-func grid_to_global(grid_pos: Vector2i) -> Vector2:
-  return tmlayer.grid_to_global(grid_pos)
+#func grid_to_global(grid_pos: Vector2i) -> Vector2:
+  #return tmlayer.grid_to_global(grid_pos)
 
 func global_to_grid(global_pos: Vector2) -> Vector2i:
   return tmlayer.global_to_grid(global_pos)

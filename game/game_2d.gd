@@ -22,9 +22,19 @@ func _ready() -> void:
 func _process(delta: float) -> void:
   pass
 
-func _on_piece_drag_started(piece: Piece2D):
-  #var pieces = get_parent().get_node("Piece_Manager").pieces
-  #var player = get_parent().get_node("Player_Manager").players[piece.player_id]
+func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
+  var piece = piece_man.pieces[grid_pos]
+  var valid_moves = get_valid_moves(piece)
+  if new_grid_pos in valid_moves:
+    # the move is valid, finalize the move
+    piece_man.move_piece(grid_pos, new_grid_pos)
+    return true
+  else:
+    # the move is invalid, snap the piece back to its original position
+    piece.position = board.grid_to_local(grid_pos)
+    return false
+
+func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
   var pieces = piece_man.pieces
   var player = player_man.players[piece.player_id]
   var raw_moves = piece.get_moves(player)
@@ -65,7 +75,13 @@ func _on_piece_drag_started(piece: Piece2D):
         if move not in pieces or pieces[move].player_id != player.id:
           moves.append(move)
 
-  board.highlights.set_highlight(moves)
+  return moves
+
+func _on_piece_drag_started(piece: Piece2D):
+  var valid_moves = get_valid_moves(piece)
+  board.highlights.set_highlight(valid_moves)
 
 func _on_piece_drag_ended(piece: Piece2D):
   board.highlights.remove_highlight()
+  var new_grid_pos = board.global_to_grid(piece.position)
+  move_piece(piece.grid_position, new_grid_pos)
