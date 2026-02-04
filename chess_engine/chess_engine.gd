@@ -1,5 +1,7 @@
 class_name ChessEngine extends Object
 
+signal rook_castled(grid_pos: Vector2i, new_grid_pos: Vector2i)
+
 var FILES: int
 var ROWS: int
 
@@ -63,6 +65,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
 
         piece_man.move_piece(grid_pos, new_grid_pos)
         piece_man.move_piece(rook_grid_pos, new_rook_grid_pos)
+        rook_castled.emit(rook_grid_pos, new_rook_grid_pos)
         return true
     Enum.Ptype.PAWN:
       #TODO: add en passant handling

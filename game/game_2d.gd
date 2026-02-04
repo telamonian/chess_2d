@@ -20,6 +20,8 @@ func spawn_game(files: int = 8, rows: int = 8) -> void:
 func _ready() -> void:
   spawn_game()
 
+  main_engine.rook_castled.connect(_on_rook_castled)
+
   piece_man.piece_drag_started.connect(_on_piece_drag_started)
   piece_man.piece_drag_ended.connect(_on_piece_drag_ended)
 
@@ -49,3 +51,6 @@ func _on_piece_drag_ended(piece_2d: Piece2D):
   board.highlights.remove_highlight()
   var new_grid_pos = board.global_to_grid(piece_2d.position)
   move_piece(piece_2d.engine_piece.grid_position, new_grid_pos)
+
+func _on_rook_castled(grid_pos: Vector2i, new_grid_pos: Vector2i):
+  piece_man.move_piece(grid_pos, new_grid_pos)
