@@ -1,5 +1,4 @@
-class_name Piece2D
-extends Area2D
+class_name Piece2D extends Area2D
 
 const PIECE_SCENE: PackedScene = preload("res://game/piece/piece_2d.tscn")
 

@@ -1,29 +1,37 @@
-extends Node2D
-class_name Player2D
+class_name Player2D extends Node2D
 
-var id: int
-var color: Enum.Pcolor
-var is_in_check: bool = false
+const PLAYER_SCENE: PackedScene = preload("res://game/player/player_2d.tscn")
 
-var row_back: int
-var row_front: int
-var row_promote: int
-var pawn_dir: int
-var rook_grid_positions: Array[Vector2i]
+var engine_player: Player
 
-func setup(new_id: int, new_color: Enum.Pcolor, files: int, rows: int):
-  id = new_id
-  color = new_color
+static func new_player(eng_player: Player) -> Player2D:
+  var new_player_2d := PLAYER_SCENE.instantiate()
+  new_player_2d.setup(eng_player)
 
-  if color == Enum.Pcolor.WHITE:
-    row_back = 0
-    row_front = 1
-    row_promote = rows - 1
-    pawn_dir = 1
-    rook_grid_positions = [Vector2i(0, 0), Vector2i(files - 1, 0)]
-  elif color == Enum.Pcolor.BLACK:
-    row_back = rows - 1
-    row_front = rows - 2
-    row_promote = 0
-    pawn_dir = -1
-    rook_grid_positions = [Vector2i(0, rows - 1), Vector2i(files - 1, rows -1)]
+  return new_player_2d
+
+var id: int:
+  get():
+    return engine_player.id
+var color: Enum.Pcolor:
+  get():
+    return engine_player.color
+
+var row_back: int:
+  get():
+    return engine_player.row_back
+var row_front: int:
+  get():
+    return engine_player.row_front
+var row_promote: int:
+  get():
+    return engine_player.row_promote
+var pawn_dir: int:
+  get():
+    return engine_player.pawn_dir
+var rook_grid_positions: Array[Vector2i]:
+  get():
+    return engine_player.rook_grid_positions
+
+func setup(eng_player: Player):
+  engine_player = eng_player

@@ -4,8 +4,7 @@ const PLAYER_SCENE = preload("res://game/player/player_2d.tscn")
 
 var players: Dictionary[int, Player2D] = {}
 
-
-func spawn_player(id: int, color: Enum.Pcolor):
+func spawn_player(engine_player: Player):
   var player: Player2D = PLAYER_SCENE.instantiate()
   add_child(player)
 
