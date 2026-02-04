@@ -19,7 +19,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
       remove_piece(new_grid_pos)
 
     pieces.erase(grid_pos)
-    piece.move(new_grid_pos, game.board.grid_to_local(new_grid_pos))
+    piece.move(game.board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
 
 func remove_piece(grid_pos: Vector2i):
@@ -31,39 +31,11 @@ func remove_piece(grid_pos: Vector2i):
   remove_child(piece)
   piece.queue_free()
 
-func spawn_piece(player_id: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece2D:
-  # need to use PIECE_SCENE.instantiate() or equivalent here instead of eg Piece2D.new()
-  # see: https://www.reddit.com/r/godot/comments/17o1mkz/comment/k7vhc0m
-  var piece = Piece2D.new_piece(player_id, color, type, grid_pos, game.board.grid_to_local(grid_pos))
+func spawn_piece(engine_piece: Piece) -> Piece2D:
+  var grid_pos = engine_piece.grid_position
+  var piece_2d = Piece2D.new_piece(engine_piece, game.board.grid_to_local(grid_pos))
 
-  add_child(piece)
-  pieces[grid_pos] = piece
+  add_child(piece_2d)
+  pieces[grid_pos] = piece_2d
 
-  return piece
-
-func spawn_back(row: int, player_id: int, color: Enum.Pcolor):
-  # rooks
-  for i in [0, 7]:
-    spawn_piece(player_id, color, Enum.Ptype.ROOK, Vector2i(i, row))
-
-  # knights
-  for i in [1, 6]:
-    spawn_piece(player_id, color, Enum.Ptype.KNIGHT, Vector2i(i, row))
-
-  # bishops
-  for i in [2, 5]:
-    spawn_piece(player_id, color, Enum.Ptype.BISHOP, Vector2i(i, row))
-
-  # royals
-  spawn_piece(player_id, color, Enum.Ptype.QUEEN, Vector2i(3, row))
-  var king = spawn_piece(player_id, color, Enum.Ptype.KING, Vector2i(4, row))
-  kings[player_id] = king
-
-func spawn_front(row: int, player_id: int, color: Enum.Pcolor):
-  # pawns
-  for i in range(8):
-    spawn_piece(player_id, color, Enum.Ptype.PAWN, Vector2i(i, row))
-
-func spawn_pieces_for_player(player: Player2D):
-  spawn_back(player.row_back, player.id, player.color)
-  spawn_front(player.row_front, player.id, player.color)
+  return piece_2d

@@ -21,6 +21,3 @@ func grid_to_local(grid_pos: Vector2i) -> Vector2:
 
 func global_to_grid(global_pos: Vector2) -> Vector2i:
   return tmlayer.global_to_grid(global_pos)
-
-func is_inbounds(grid_pos: Vector2i) -> bool:
-  return 0 <= grid_pos.x and grid_pos.x < FILES and 0 <= grid_pos.y and grid_pos.y < ROWS

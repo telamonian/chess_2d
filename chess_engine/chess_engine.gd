@@ -76,7 +76,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     return true
   else:
     # the move is invalid, snap the piece back to its original position
-    piece.position = board.grid_to_local(grid_pos)
+    #piece.position = board.grid_to_local(grid_pos)
     return false
 
 func is_threatened(file: int, row: int, player_id: int) -> bool:
