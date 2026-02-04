@@ -63,5 +63,5 @@ func spawn_pieces_for_player(player: Player):
 func get_resources() -> Array[Piece.PieceResource]:
   var resources: Array[Piece.PieceResource] = []
   for piece in pieces.values():
-    resources.append(Piece.PieceResource.new(piece.player_id, piece.type, piece.grid_position))
+    resources.append(piece.get_resource())
   return resources

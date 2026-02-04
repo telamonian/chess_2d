@@ -44,6 +44,9 @@ func get_moves():
     Enum.Ptype.PAWN:
       return moves_pawn(file, row, pawn_dir)
 
+func get_resource() -> PieceResource:
+  return PieceResource.new(player_id, type, grid_position)
+
 static func moves_pawn(file: int, row: int, pawn_dir: int) -> Array[Vector2i]:
   return [Vector2i(file, row + 1*pawn_dir)]
 
