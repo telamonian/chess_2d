@@ -103,3 +103,13 @@ static func moves_queen(file: int, row: int) -> Array[Array]:
   var moves = moves_rook(file, row)
   moves.append_array(moves_bishop(file, row))
   return moves
+
+class PieceResource extends Resource:
+  @export var player_id: int
+  @export var type: Enum.Ptype
+  @export var grid_position: Vector2i
+
+  func _init(pid: int = 0, t: Enum.Ptype = Enum.Ptype.PAWN, grid_pos: Vector2i = Vector2i(-1, -1)):
+    player_id = pid
+    type = t
+    grid_position = grid_pos

@@ -3,13 +3,20 @@ class_name ChessEngine extends Object
 var FILES: int
 var ROWS: int
 
-var board: Board
-var piece_man: PieceManager
-var player_man: PlayerManager
+var board: Board = null
+var piece_man: PieceManager = null
+var player_man: PlayerManager = null
 
 func setup(files: int = 8, rows: int = 8):
   FILES = files
   ROWS = rows
+
+  if board != null:
+    board.queue_free()
+  if piece_man != null:
+    piece_man.queue_free()
+  if player_man != null:
+    player_man.queue_free()
 
   board = Board.new(FILES, ROWS)
   piece_man = PieceManager.new()
@@ -22,6 +29,14 @@ func spawn_game(files: int = 8, rows: int = 8):
   for player in player_man.players.values():
     piece_man.spawn_pieces_for_player(player)
 
+func restore_game_state(piece_resources: Array[Piece.PieceResource], files: int = 8, rows: int = 8):
+  _spawn_game(files, rows)
+
+  # restore the pieces decribed in the piece_resources
+  for pr in piece_resources:
+    var player = player_man.players[pr.player_id]
+    piece_man.spawn_piece(player.id, player.pawn_dir, player.color, pr.type, pr.grid_position)
+
 func _spawn_game(files: int = 8, rows: int = 8):
   setup(files, rows)
 
@@ -29,6 +44,9 @@ func _spawn_game(files: int = 8, rows: int = 8):
 
   player_man.spawn_player(0, Enum.Pcolor.WHITE, FILES, ROWS)
   player_man.spawn_player(1, Enum.Pcolor.BLACK, FILES, ROWS)
+
+func get_game_state() -> Array[Piece.PieceResource]:
+  return piece_man.get_resources()
 
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var piece = piece_man.pieces[grid_pos]

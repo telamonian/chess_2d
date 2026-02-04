@@ -29,7 +29,6 @@ func remove_piece(grid_pos: Vector2i):
 func spawn_piece(player_id: int, pawn_dir: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece:
   var piece = Piece.new(player_id, pawn_dir, color, type, grid_pos)
 
-  #add_child(piece)
   pieces[grid_pos] = piece
 
   return piece
@@ -60,3 +59,9 @@ func spawn_front(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
 func spawn_pieces_for_player(player: Player):
   spawn_back(player.row_back, player.id, player.pawn_dir, player.color)
   spawn_front(player.row_front, player.id, player.pawn_dir, player.color)
+
+func get_resources() -> Array[Piece.PieceResource]:
+  var resources: Array[Piece.PieceResource] = []
+  for piece in pieces.values():
+    resources.append(Piece.PieceResource.new(piece.player_id, piece.type, piece.grid_position))
+  return resources
