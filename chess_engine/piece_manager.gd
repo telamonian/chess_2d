@@ -28,6 +28,8 @@ func spawn_piece(player_id: int, pawn_dir: int, color: Enum.Pcolor, type: Enum.P
   var piece = Piece.new(player_id, pawn_dir, color, type, grid_pos)
 
   pieces[grid_pos] = piece
+  if type == Enum.Ptype.KING:
+    kings[player_id] = piece
 
   return piece
 
@@ -46,8 +48,7 @@ func spawn_back(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
 
   # royals
   spawn_piece(player_id, pawn_dir, color, Enum.Ptype.QUEEN, Vector2i(3, row))
-  var king = spawn_piece(player_id, pawn_dir, color, Enum.Ptype.KING, Vector2i(4, row))
-  kings[player_id] = king
+  spawn_piece(player_id, pawn_dir, color, Enum.Ptype.KING, Vector2i(4, row))
 
 func spawn_front(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
   # pawns

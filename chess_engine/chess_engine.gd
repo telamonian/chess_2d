@@ -12,11 +12,11 @@ func setup(files: int = 8, rows: int = 8):
   ROWS = rows
 
   if board != null:
-    board.queue_free()
+    board.free()
   if piece_man != null:
-    piece_man.queue_free()
+    piece_man.free()
   if player_man != null:
-    player_man.queue_free()
+    player_man.free()
 
   board = Board.new(FILES, ROWS)
   piece_man = PieceManager.new()
@@ -121,42 +121,18 @@ func is_checked(player_id: int) -> bool:
   var king = piece_man.kings[player_id]
   return is_threatened(king.file, king.row, player_id)
 
-#TODO: figure out a way to check checked without moving around the actual game pieces
-#TODO: add handling for getting out of check
 func filter_checked(piece: Piece, moves: Array[Vector2i]) -> Array[Vector2i]:
-  #var player_id = piece.player_id
-  #var filtered: Array[Vector2i] = []
-  #var original_is_moved = piece.is_moved
-  #var original_grid_pos = piece.grid_position
-  #var current_grid_pos = piece.grid_position
-  #var buffer_grid_pos = Vector2i(-1, -1)
-#
-  #for move in moves:
-    #piece_man.move_piece(current_grid_pos, move)
-    #current_grid_pos = move
-    #if not is_checked(player_id):
-      #filtered.append(move)
-#
-  #piece_man.move_piece(original_grid_pos, buffer_grid_pos)
-  #if not is_checked(player_id):
-    #filtered = moves
-#
-  #piece_man.move_piece(buffer_grid_pos, original_grid_pos)
-  #piece.is_moved = original_is_moved
-  #return filtered
-
   var player_id = piece.player_id
+  var original_state = get_game_state()
+  var test_engine = ChessEngine.new()
+
   var filtered: Array[Vector2i] = []
-  var original_is_moved = piece.is_moved
-  var original_grid_pos = piece.grid_position
-  var buffer_grid_pos = Vector2i(-1, -1)
+  for move in moves:
+    test_engine.restore_game_state(original_state, FILES, ROWS)
+    test_engine.piece_man.move_piece(piece.grid_position, move)
+    if not test_engine.is_checked(player_id):
+      filtered.append(move)
 
-  piece_man.move_piece(original_grid_pos, buffer_grid_pos)
-  if not is_checked(player_id):
-    filtered = moves
-
-  piece_man.move_piece(buffer_grid_pos, original_grid_pos)
-  piece.is_moved = original_is_moved
   return filtered
 
 func get_valid_moves(piece: Piece) -> Array[Vector2i]:
