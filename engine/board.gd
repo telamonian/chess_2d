@@ -3,7 +3,7 @@ class_name Board extends Object
 var FILES: int
 var ROWS: int
 
-func spawn_board(files: int, rows: int):
+func _init(files: int, rows: int):
   FILES = files
   ROWS = rows
 
