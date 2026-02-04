@@ -15,7 +15,7 @@ var row:
 
 # static constructor/instantiator
 # see: https://www.reddit.com/r/godot/comments/13pm5o5/comment/ktmmqp0
-static func new_piece(eng_piece: Piece, pixel_pos: Vector2):
+static func new_piece(eng_piece: Piece, pixel_pos: Vector2) -> Piece2D:
   #engine_piece = epiece
   # walrus operator assigns both value and type
   var new_piece_2d := PIECE_SCENE.instantiate()
@@ -23,7 +23,7 @@ static func new_piece(eng_piece: Piece, pixel_pos: Vector2):
   # at this point this node and any children exist, but any _ready and child._ready won't be called until this node is added to main tree (via eg add_child)
   new_piece_2d.setup(eng_piece, pixel_pos)
 
-  return new_piece
+  return new_piece_2d
 
 func move(pixel_pos: Vector2):
   position = pixel_pos

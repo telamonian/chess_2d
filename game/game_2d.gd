@@ -1,13 +1,25 @@
 extends Node2D
 
-@onready var player_man = $Player_Manager
-@onready var piece_man = $Piece_Manager
+@onready var player_man = $Player_2d_Manager
+@onready var piece_man = $Piece_2d_Manager
 @onready var board = $Board_2d
 
 var main_engine: ChessEngine = ChessEngine.new()
 
+func spawn_game(files: int = 8, rows: int = 8) -> void:
+  # spawn the game logic
+  main_engine.spawn_game(files, rows)
+
+  # spawn the game gui
+  board.spawn_board(files, rows)
+  for engine_player in main_engine.player_man.players.values():
+    player_man.spawn_player(engine_player)
+  for engine_piece in main_engine.piece_man.pieces.values():
+    piece_man.spawn_piece(engine_piece)
+
 func _ready() -> void:
-  main_engine.spawn_game()
+  spawn_game()
+
   piece_man.piece_drag_started.connect(_on_piece_drag_started)
   piece_man.piece_drag_ended.connect(_on_piece_drag_ended)
 
@@ -19,6 +31,11 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     piece.position = board.grid_to_local(grid_pos)
     return false
 
+func get_valid_moves(piece_2d: Piece2D):
+  return main_engine.get_valid_moves(piece_2d.engine_piece)
+
+func get_valid_castling_moves(piece_2d: Piece2D):
+  return main_engine.get_valid_castling_moves(piece_2d.engine_piece)
   #var player = player_man.players[piece.player_id]
   #var valid_moves = get_valid_moves(piece)
 #
@@ -178,14 +195,14 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
               #valid_castling_moves.append(Vector2i(piece.file + 2*shift, piece.row))
   #return valid_castling_moves
 
-func _on_piece_drag_started(piece: Piece2D):
-  var valid_moves = main_engine.get_valid_moves(piece)
-  match piece.type:
+func _on_piece_drag_started(piece_2d: Piece2D):
+  var valid_moves = get_valid_moves(piece_2d)
+  match piece_2d.engine_piece.type:
     Enum.Ptype.KING:
-      valid_moves.append_array(main_engine.get_valid_castling_moves(piece))
+      valid_moves.append_array(get_valid_castling_moves(piece_2d))
   board.highlights.set_highlight(valid_moves)
 
 func _on_piece_drag_ended(piece: Piece2D):
   board.highlights.remove_highlight()
   var new_grid_pos = board.global_to_grid(piece.position)
-  move_piece(piece.grid_position, new_grid_pos)
+  move_piece(piece.engine_piece.grid_position, new_grid_pos)
