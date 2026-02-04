@@ -14,7 +14,6 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
 
     pieces.erase(grid_pos)
     piece.move(new_grid_pos)
-    #piece.move(new_grid_pos, game.board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
 
 func remove_piece(grid_pos: Vector2i):

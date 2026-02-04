@@ -73,8 +73,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     piece_man.move_piece(grid_pos, new_grid_pos)
     return true
   else:
-    # the move is invalid, snap the piece back to its original position
-    #piece.position = board.grid_to_local(grid_pos)
+    # the move is invalid
     return false
 
 func is_threatened(file: int, row: int, player_id: int) -> bool:
@@ -221,15 +220,3 @@ func get_valid_castling_moves(piece: Piece) -> Array[Vector2i]:
               # move the king 2 towards the unmoved rook
               valid_castling_moves.append(Vector2i(piece.file + 2*shift, piece.row))
   return valid_castling_moves
-
-#func _on_piece_drag_started(piece: Piece2D):
-  #var valid_moves = get_valid_moves(piece)
-  #match piece.type:
-    #Enum.Ptype.KING:
-      #valid_moves.append_array(get_valid_castling_moves(piece))
-  #board.highlights.set_highlight(valid_moves)
-#
-#func _on_piece_drag_ended(piece: Piece2D):
-  #board.highlights.remove_highlight()
-  #var new_grid_pos = board.global_to_grid(piece.position)
-  #move_piece(piece.grid_position, new_grid_pos)
