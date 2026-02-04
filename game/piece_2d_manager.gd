@@ -5,7 +5,6 @@ signal piece_drag_started(piece: Piece2D)
 signal piece_drag_ended(piece: Piece2D)
 
 var pieces: Dictionary[Vector2i, Piece2D] = {}
-var kings: Dictionary[int, Piece2D] = {}
 
 @onready var game = get_parent()
 
@@ -26,8 +25,6 @@ func remove_piece(grid_pos: Vector2i):
   var piece: Piece2D = pieces.get(grid_pos)
 
   pieces.erase(grid_pos)
-  if piece.type == Enum.Ptype.KING:
-    kings.erase(piece.player_id)
   remove_child(piece)
   piece.queue_free()
 
