@@ -14,7 +14,6 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
 
     pieces.erase(grid_pos)
     piece.move(new_grid_pos)
-    #piece.move(new_grid_pos, game.board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
 
 func remove_piece(grid_pos: Vector2i):
@@ -23,13 +22,14 @@ func remove_piece(grid_pos: Vector2i):
   pieces.erase(grid_pos)
   if piece.type == Enum.Ptype.KING:
     kings.erase(piece.player_id)
-  #remove_child(piece)
-  piece.queue_free()
+  piece.call_deferred("free")
 
 func spawn_piece(player_id: int, pawn_dir: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece:
   var piece = Piece.new(player_id, pawn_dir, color, type, grid_pos)
 
   pieces[grid_pos] = piece
+  if type == Enum.Ptype.KING:
+    kings[player_id] = piece
 
   return piece
 
@@ -48,8 +48,7 @@ func spawn_back(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
 
   # royals
   spawn_piece(player_id, pawn_dir, color, Enum.Ptype.QUEEN, Vector2i(3, row))
-  var king = spawn_piece(player_id, pawn_dir, color, Enum.Ptype.KING, Vector2i(4, row))
-  kings[player_id] = king
+  spawn_piece(player_id, pawn_dir, color, Enum.Ptype.KING, Vector2i(4, row))
 
 func spawn_front(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
   # pawns

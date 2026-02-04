@@ -12,11 +12,11 @@ func setup(files: int = 8, rows: int = 8):
   ROWS = rows
 
   if board != null:
-    board.queue_free()
+    board.free()
   if piece_man != null:
-    piece_man.queue_free()
+    piece_man.free()
   if player_man != null:
-    player_man.queue_free()
+    player_man.free()
 
   board = Board.new(FILES, ROWS)
   piece_man = PieceManager.new()
@@ -39,8 +39,6 @@ func restore_game_state(piece_resources: Array[Piece.PieceResource], files: int 
 
 func _spawn_game(files: int = 8, rows: int = 8):
   setup(files, rows)
-
-  board.spawn_board(8, 8)
 
   player_man.spawn_player(0, Enum.Pcolor.WHITE, FILES, ROWS)
   player_man.spawn_player(1, Enum.Pcolor.BLACK, FILES, ROWS)
@@ -75,8 +73,7 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     piece_man.move_piece(grid_pos, new_grid_pos)
     return true
   else:
-    # the move is invalid, snap the piece back to its original position
-    piece.position = board.grid_to_local(grid_pos)
+    # the move is invalid
     return false
 
 func is_threatened(file: int, row: int, player_id: int) -> bool:
@@ -96,7 +93,7 @@ func is_threatened(file: int, row: int, player_id: int) -> bool:
 
   # check for knight and king threats
   for ptype in [Enum.Ptype.KNIGHT, Enum.Ptype.KING]:
-    for move in Piece2D.moves_knight(file, row) if ptype == Enum.Ptype.KNIGHT else Piece2D.moves_king(file, row):
+    for move in Piece.moves_knight(file, row) if ptype == Enum.Ptype.KNIGHT else Piece.moves_king(file, row):
       if board.is_inbounds(move):
         if move in pieces:
           var potential_threat = pieces[move]
@@ -105,7 +102,7 @@ func is_threatened(file: int, row: int, player_id: int) -> bool:
 
   # check for bishop, rook, and queen threats
   for ptype in [Enum.Ptype.BISHOP, Enum.Ptype.ROOK]:
-    for run in Piece2D.moves_bishop(file, row) if ptype == Enum.Ptype.BISHOP else Piece2D.moves_rook(file, row):
+    for run in Piece.moves_bishop(file, row) if ptype == Enum.Ptype.BISHOP else Piece.moves_rook(file, row):
       for move in run:
         if board.is_inbounds(move):
           if move in pieces:
@@ -124,10 +121,24 @@ func is_checked(player_id: int) -> bool:
   var king = piece_man.kings[player_id]
   return is_threatened(king.file, king.row, player_id)
 
-func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
+func filter_checked(piece: Piece, moves: Array[Vector2i]) -> Array[Vector2i]:
+  var player_id = piece.player_id
+  var original_state = get_game_state()
+  var test_engine = ChessEngine.new()
+
+  var filtered: Array[Vector2i] = []
+  for move in moves:
+    test_engine.restore_game_state(original_state, FILES, ROWS)
+    test_engine.piece_man.move_piece(piece.grid_position, move)
+    if not test_engine.is_checked(player_id):
+      filtered.append(move)
+
+  return filtered
+
+func get_valid_moves(piece: Piece) -> Array[Vector2i]:
   var pieces = piece_man.pieces
   var player = player_man.players[piece.player_id]
-  var raw_moves = piece.get_moves(player)
+  var raw_moves = piece.get_moves()
   var moves: Array[Vector2i]
 
   if piece.type == Enum.Ptype.PAWN:
@@ -166,31 +177,7 @@ func get_valid_moves(piece: Piece2D) -> Array[Vector2i]:
 
   return filter_checked(piece, moves)
 
-#TODO: figure out a way to check checked without moving around the actual game pieces
-#TODO: add handling for getting out of check
-func filter_checked(piece: Piece2D, moves: Array[Vector2i]) -> Array[Vector2i]:
-  var player_id = piece.player_id
-  var filtered: Array[Vector2i] = []
-  var original_is_moved = piece.is_moved
-  var original_grid_pos = piece.grid_position
-  var current_grid_pos = piece.grid_position
-  var buffer_grid_pos = Vector2i(-1, -1)
-
-  for move in moves:
-    piece_man.move_piece(current_grid_pos, move)
-    current_grid_pos = move
-    if not is_checked(player_id):
-      filtered.append(move)
-
-  piece_man.move_piece(original_grid_pos, buffer_grid_pos)
-  if not is_checked(player_id):
-    filtered = moves
-
-  piece_man.move_piece(buffer_grid_pos, original_grid_pos)
-  piece.is_moved = original_is_moved
-  return filtered
-
-func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
+func get_valid_castling_moves(piece: Piece) -> Array[Vector2i]:
   var pieces = piece_man.pieces
 
   var valid_castling_moves: Array[Vector2i] = []
@@ -209,15 +196,3 @@ func get_valid_castling_moves(piece: Piece2D) -> Array[Vector2i]:
               # move the king 2 towards the unmoved rook
               valid_castling_moves.append(Vector2i(piece.file + 2*shift, piece.row))
   return valid_castling_moves
-
-#func _on_piece_drag_started(piece: Piece2D):
-  #var valid_moves = get_valid_moves(piece)
-  #match piece.type:
-    #Enum.Ptype.KING:
-      #valid_moves.append_array(get_valid_castling_moves(piece))
-  #board.highlights.set_highlight(valid_moves)
-#
-#func _on_piece_drag_ended(piece: Piece2D):
-  #board.highlights.remove_highlight()
-  #var new_grid_pos = board.global_to_grid(piece.position)
-  #move_piece(piece.grid_position, new_grid_pos)
