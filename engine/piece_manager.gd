@@ -57,6 +57,6 @@ func spawn_front(row: int, player_id: int, pawn_dir: int, color: Enum.Pcolor):
   for i in range(8):
     spawn_piece(player_id, pawn_dir, color, Enum.Ptype.PAWN, Vector2i(i, row))
 
-func spawn_pieces_for_player(player: Player2D):
+func spawn_pieces_for_player(player: Player):
   spawn_back(player.row_back, player.id, player.pawn_dir, player.color)
   spawn_front(player.row_front, player.id, player.pawn_dir, player.color)
