@@ -8,10 +8,28 @@ var is_dragged: bool = false
 
 var file:
   get():
-    return engine_piece.grid_position.x
+    return engine_piece.file
 var row:
   get():
-    return engine_piece.grid_position.y
+    return engine_piece.row
+
+var player_id: int:
+  get():
+    return engine_piece.player_id
+var pawn_dir: int:
+  get():
+    return engine_piece.pawn_dir
+var color: Enum.Pcolor:
+  get():
+    return engine_piece.color
+var type: Enum.Ptype:
+  get():
+    return engine_piece.type
+var grid_position: Vector2i:
+  get():
+    return engine_piece.grid_position
+
+var is_moved: bool = false
 
 # static constructor/instantiator
 # see: https://www.reddit.com/r/godot/comments/13pm5o5/comment/ktmmqp0

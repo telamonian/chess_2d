@@ -23,8 +23,7 @@ func remove_piece(grid_pos: Vector2i):
   pieces.erase(grid_pos)
   if piece.type == Enum.Ptype.KING:
     kings.erase(piece.player_id)
-  #remove_child(piece)
-  piece.queue_free()
+  piece.call_deferred("free")
 
 func spawn_piece(player_id: int, pawn_dir: int, color: Enum.Pcolor, type: Enum.Ptype, grid_pos: Vector2i) -> Piece:
   var piece = Piece.new(player_id, pawn_dir, color, type, grid_pos)
