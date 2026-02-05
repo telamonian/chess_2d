@@ -2,6 +2,7 @@ class_name ChessEngine extends Object
 
 signal rook_castled(rook_grid_pos: Vector2i, new_rook_grid_pos: Vector2i)
 signal pawn_taken_enpassant(taken_pawn_pos: Vector2i)
+signal pawn_promoted(promoted_pawn_pos: Vector2i, new_type: Enum.Ptype)
 
 var FILES: int
 var ROWS: int
@@ -95,6 +96,10 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
     if piece.type == Enum.Ptype.PAWN:
       if not piece.is_moved and absi(grid_pos.y - new_grid_pos.y) == 2:
         passantable_position = new_grid_pos
+
+      if new_grid_pos.y == player.row_promote:
+        # TODO: support promoting pawns to other than queens
+        piece_man.promote_piece(grid_pos, Enum.Ptype.QUEEN)
 
     # the move is valid, finalize the move
     piece_man.move_piece(grid_pos, new_grid_pos)

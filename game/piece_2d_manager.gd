@@ -21,6 +21,10 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
     piece.move(game.board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
 
+func promote_piece(grid_pos: Vector2i, new_type: Enum.Ptype):
+  var piece: Piece = pieces.get(grid_pos)
+  piece.promote(new_type)
+
 func remove_piece(grid_pos: Vector2i):
   var piece: Piece2D = pieces.get(grid_pos)
 

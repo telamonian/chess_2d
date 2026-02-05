@@ -29,7 +29,9 @@ var grid_position: Vector2i:
   get():
     return engine_piece.grid_position
 
-var is_moved: bool = false
+var is_moved: bool:
+  get():
+    return engine_piece.is_moved
 
 # static constructor/instantiator
 # see: https://www.reddit.com/r/godot/comments/13pm5o5/comment/ktmmqp0
@@ -45,6 +47,9 @@ static func new_piece(eng_piece: Piece, pixel_pos: Vector2) -> Piece2D:
 
 func move(pixel_pos: Vector2):
   position = pixel_pos
+
+func promote(new_type: Enum.Ptype):
+  $Piece_Sprite.set_type(new_type)
 
 func setup(eng_piece: Piece, pixel_pos: Vector2):
   engine_piece = eng_piece

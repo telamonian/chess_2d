@@ -65,3 +65,6 @@ func _on_rook_castled(rook_grid_pos: Vector2i, new_rook_grid_pos: Vector2i):
 
 func _on_pawn_taken_enpassant(taken_pawn_pos: Vector2i):
   piece_man.remove_piece(taken_pawn_pos)
+
+func _on_pawn_promoted(promoted_pawn_pos: Vector2i, new_type: Enum.Ptype):
+  piece_man.promote_piece(promoted_pawn_pos, new_type)

@@ -22,6 +22,9 @@ func move(grid_pos: Vector2i):
   grid_position = grid_pos
   is_moved = true
 
+func promote(new_type: Enum.Ptype):
+  type = new_type
+
 func setup(pid: int, pdir: int, c: Enum.Pcolor, t: Enum.Ptype, grid_pos: Vector2i):
   player_id = pid
   pawn_dir = pdir
