@@ -1,6 +1,7 @@
 class_name ChessEngine extends Object
 
-signal rook_castled(grid_pos: Vector2i, new_grid_pos: Vector2i)
+signal rook_castled(rook_grid_pos: Vector2i, new_rook_grid_pos: Vector2i)
+signal pawn_taken_enpassant(taken_pawn_pos: Vector2i)
 
 var FILES: int
 var ROWS: int
@@ -8,6 +9,8 @@ var ROWS: int
 var board: Board = null
 var piece_man: PieceManager = null
 var player_man: PlayerManager = null
+
+var passantable_position = null #: Vector2i = null
 
 func setup(files: int = 8, rows: int = 8):
   FILES = files
@@ -23,6 +26,8 @@ func setup(files: int = 8, rows: int = 8):
   board = Board.new(FILES, ROWS)
   piece_man = PieceManager.new()
   player_man = PlayerManager.new()
+
+  passantable_position = null
 
 func spawn_game(files: int = 8, rows: int = 8):
   _spawn_game(files, rows)
@@ -53,6 +58,13 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
   var player = player_man.players[piece.player_id]
   var valid_moves = get_valid_moves(piece)
 
+  if passantable_position != null:
+    # there is a passantable pawn
+    var passantable_pawn = piece_man.pieces[passantable_position]
+    if passantable_pawn.player_id == player.id:
+      # reset passantable if the player who owns the passantable_pawn has moved again
+      passantable_position = null
+
   # special handling for castling, en passant, etc
   match piece.type:
     Enum.Ptype.KING:
@@ -66,12 +78,24 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
         piece_man.move_piece(grid_pos, new_grid_pos)
         piece_man.move_piece(rook_grid_pos, new_rook_grid_pos)
         rook_castled.emit(rook_grid_pos, new_rook_grid_pos)
+
         return true
     Enum.Ptype.PAWN:
-      #TODO: add en passant handling
-      pass
+      if passantable_position != null:
+        var valid_passant_moves = get_valid_passant_moves(piece)
+        if new_grid_pos in valid_passant_moves:
+          piece_man.move_piece(grid_pos, new_grid_pos)
+          piece_man.remove_piece(passantable_position)
+          pawn_taken_enpassant.emit(passantable_position)
+
+          passantable_position = null
+          return true
 
   if new_grid_pos in valid_moves:
+    if piece.type == Enum.Ptype.PAWN:
+      if not piece.is_moved and absi(grid_pos.y - new_grid_pos.y) == 2:
+        passantable_position = new_grid_pos
+
     # the move is valid, finalize the move
     piece_man.move_piece(grid_pos, new_grid_pos)
     return true
@@ -199,3 +223,19 @@ func get_valid_castling_moves(piece: Piece) -> Array[Vector2i]:
               # move the king 2 towards the unmoved rook
               valid_castling_moves.append(Vector2i(piece.file + 2*shift, piece.row))
   return valid_castling_moves
+
+func get_valid_passant_moves(piece: Piece) -> Array[Vector2i]:
+  var valid_passant_moves: Array[Vector2i] = []
+  if passantable_position != null:
+    # there is a en passantable pawn
+    if piece.grid_position.y == passantable_position.y and absi(piece.grid_position.x - passantable_position.x) == 1:
+      # piece is next to the passantable pawn
+      var post_passant_pos = Vector2i(passantable_position.x, passantable_position.y + piece.pawn_dir)
+      valid_passant_moves.append(post_passant_pos)
+
+      # TODO: is checking for the emptiness of the post-passant position necessary? I'm pretty sure no
+      #if post_passant_pos not in piece_man.pieces:
+        ## the post-passant position is not occupied by another piece
+        #valid_passant_moves.append(post_passant_pos)
+
+  return valid_passant_moves
