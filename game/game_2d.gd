@@ -22,6 +22,7 @@ func _ready() -> void:
 
   main_engine.rook_castled.connect(_on_rook_castled)
   main_engine.pawn_taken_enpassant.connect(_on_pawn_taken_enpassant)
+  main_engine.pawn_promoted.connect(_on_pawn_promoted)
 
   piece_man.piece_drag_started.connect(_on_piece_drag_started)
   piece_man.piece_drag_ended.connect(_on_piece_drag_ended)

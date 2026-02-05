@@ -9,7 +9,7 @@ var pieces: Dictionary[Vector2i, Piece2D] = {}
 @onready var game = get_parent()
 
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
-  var piece = pieces[grid_pos]
+  var piece: Piece2D = pieces[grid_pos]
 
   if grid_pos != new_grid_pos:
     # piece has actually moved
@@ -22,11 +22,11 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
     pieces[new_grid_pos] = piece
 
 func promote_piece(grid_pos: Vector2i, new_type: Enum.Ptype):
-  var piece: Piece = pieces.get(grid_pos)
+  var piece: Piece2D = pieces[grid_pos]
   piece.promote(new_type)
 
 func remove_piece(grid_pos: Vector2i):
-  var piece: Piece2D = pieces.get(grid_pos)
+  var piece: Piece2D = pieces[grid_pos]
 
   pieces.erase(grid_pos)
   remove_child(piece)

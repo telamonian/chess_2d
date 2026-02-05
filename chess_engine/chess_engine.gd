@@ -94,12 +94,15 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> bool:
 
   if new_grid_pos in valid_moves:
     if piece.type == Enum.Ptype.PAWN:
+      # handle new pawn position being passantable
       if not piece.is_moved and absi(grid_pos.y - new_grid_pos.y) == 2:
         passantable_position = new_grid_pos
 
+      # handle pawn promotion
       if new_grid_pos.y == player.row_promote:
         # TODO: support promoting pawns to other than queens
         piece_man.promote_piece(grid_pos, Enum.Ptype.QUEEN)
+        pawn_promoted.emit(grid_pos, Enum.Ptype.QUEEN)
 
     # the move is valid, finalize the move
     piece_man.move_piece(grid_pos, new_grid_pos)
