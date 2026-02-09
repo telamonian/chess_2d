@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://eviytf37l6wg"]
+[gd_scene format=3 uid="uid://eviytf37l6wg"]
 
 [ext_resource type="PackedScene" uid="uid://cgg65ymwya6wq" path="res://game/board/board_2d.tscn" id="1_kt5uc"]
 [ext_resource type="Script" uid="uid://5u734353clku" path="res://game/game_2d.gd" id="1_luvuv"]
@@ -7,18 +7,18 @@
 [ext_resource type="Texture2D" uid="uid://ybwh51t7hip6" path="res://assets/gear_icon.svg" id="5_ume8q"]
 [ext_resource type="Script" uid="uid://q5tyiq337eqo" path="res://game/settings_button.gd" id="6_t8shf"]
 
-[node name="Game_2d" type="Node2D"]
+[node name="Game_2d" type="Node2D" unique_id=1108538603]
 script = ExtResource("1_luvuv")
 
-[node name="Piece_2d_Manager" type="Node2D" parent="."]
+[node name="Piece_2d_Manager" type="Node2D" parent="." unique_id=1894398604]
 script = ExtResource("2_w264a")
 
-[node name="Player_2d_Manager" type="Node2D" parent="."]
+[node name="Player_2d_Manager" type="Node2D" parent="." unique_id=1434546514]
 script = ExtResource("4_bd2yl")
 
-[node name="Board_2d" parent="." instance=ExtResource("1_kt5uc")]
+[node name="Board_2d" parent="." unique_id=1460689862 instance=ExtResource("1_kt5uc")]
 
-[node name="Settings_Button" type="Button" parent="."]
+[node name="Settings_Button" type="Button" parent="." unique_id=80259810]
 z_index = 20
 anchors_preset = 1
 anchor_left = 1.0

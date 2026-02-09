@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://i5yadx4rd5pt"]
+[gd_scene format=3 uid="uid://i5yadx4rd5pt"]
 
 [ext_resource type="Script" uid="uid://0bgnk8hslta0" path="res://game/piece/piece_2d.gd" id="1_tlekb"]
 [ext_resource type="Texture2D" uid="uid://bvrykx2ibt26e" path="res://assets/chess_pieces_sprite.svg" id="2_qeb0b"]
@@ -7,13 +7,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wdjlj"]
 size = Vector2(128, 128)
 
-[node name="Piece_2d" type="Area2D"]
+[node name="Piece_2d" type="Area2D" unique_id=1409470519]
 script = ExtResource("1_tlekb")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=123209917]
 shape = SubResource("RectangleShape2D_wdjlj")
 
-[node name="Piece_Sprite" type="Sprite2D" parent="."]
+[node name="Piece_Sprite" type="Sprite2D" parent="." unique_id=482093080]
 position = Vector2(-9.536743e-07, 1.9073486e-06)
 scale = Vector2(2.8444445, 2.8444445)
 texture = ExtResource("2_qeb0b")
