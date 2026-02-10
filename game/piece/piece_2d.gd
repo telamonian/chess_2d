@@ -77,7 +77,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
   if is_dragged:
-    position = get_parent().get_parent().to_local(get_global_mouse_position())
+    position = get_parent().to_local(get_global_mouse_position())
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
   if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

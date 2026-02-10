@@ -26,10 +26,14 @@ func grid_to_local(grid_pos: Vector2i) -> Vector2:
   var row_rev_grid_pos = Vector2i(grid_pos.x, ROWS - 1 - grid_pos.y)
   return map_to_local(row_rev_grid_pos)
 
-func grid_to_global(grid_pos: Vector2i) -> Vector2:
-  var row_rev_grid_pos = Vector2i(grid_pos.x, ROWS - 1 - grid_pos.y)
-  return to_global(map_to_local(row_rev_grid_pos))
+#func grid_to_global(grid_pos: Vector2i) -> Vector2:
+  #var row_rev_grid_pos = Vector2i(grid_pos.x, ROWS - 1 - grid_pos.y)
+  #return to_global(map_to_local(row_rev_grid_pos))
+#
+#func global_to_grid(global_pos: Vector2) -> Vector2i:
+  #var row_rev_grid_pos = local_to_map(to_local(global_pos))
+  #return Vector2i(row_rev_grid_pos.x, ROWS - 1 - row_rev_grid_pos.y)
 
-func global_to_grid(global_pos: Vector2) -> Vector2i:
-  var row_rev_grid_pos = local_to_map(to_local(global_pos))
+func local_to_grid(local_pos: Vector2) -> Vector2i:
+  var row_rev_grid_pos = local_to_map(local_pos)
   return Vector2i(row_rev_grid_pos.x, ROWS - 1 - row_rev_grid_pos.y)
