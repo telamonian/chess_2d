@@ -4,44 +4,16 @@
 [ext_resource type="Script" uid="uid://5u734353clku" path="res://game/game_2d.gd" id="1_luvuv"]
 [ext_resource type="Script" uid="uid://c7gdqb78i37ci" path="res://game/piece_2d_manager.gd" id="2_w264a"]
 [ext_resource type="Script" uid="uid://clviav8qckj4k" path="res://game/player_2d_manager.gd" id="4_bd2yl"]
-[ext_resource type="Texture2D" uid="uid://ybwh51t7hip6" path="res://assets/gear_icon.svg" id="5_ume8q"]
-[ext_resource type="Script" uid="uid://q5tyiq337eqo" path="res://game/settings_button.gd" id="6_t8shf"]
 
-[node name="Layout" type="CanvasLayer" unique_id=49723144]
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="." unique_id=1869626150]
-anchors_preset = -1
-anchor_top = 0.026
-anchor_right = 1.0
-anchor_bottom = 0.974
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Game_2d" type="Node2D" parent="AspectRatioContainer" unique_id=379377748]
+[node name="Game_2d" type="Node2D" unique_id=379377748]
 z_index = 100
-position = Vector2(448.08005, 0)
 script = ExtResource("1_luvuv")
 
-[node name="Piece_2d_Manager" type="Node2D" parent="AspectRatioContainer/Game_2d" unique_id=1894398604]
+[node name="Piece_2d_Manager" type="Node2D" parent="." unique_id=1894398604]
 script = ExtResource("2_w264a")
 
-[node name="Player_2d_Manager" type="Node2D" parent="AspectRatioContainer/Game_2d" unique_id=1434546514]
+[node name="Player_2d_Manager" type="Node2D" parent="." unique_id=1434546514]
 script = ExtResource("4_bd2yl")
 
-[node name="Board_2d" parent="AspectRatioContainer/Game_2d" unique_id=1460689862 instance=ExtResource("1_kt5uc")]
+[node name="Board_2d" parent="." unique_id=1460689862 instance=ExtResource("1_kt5uc")]
 z_index = -1
-
-[node name="Settings_Button" type="Button" parent="." unique_id=80259810]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -157.0
-offset_top = 29.0
-offset_right = -29.0
-offset_bottom = 157.0
-grow_horizontal = 0
-icon = ExtResource("5_ume8q")
-expand_icon = true
-script = ExtResource("6_t8shf")
