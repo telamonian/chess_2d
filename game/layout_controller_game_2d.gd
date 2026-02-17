@@ -4,7 +4,6 @@ extends Control
 #@onready var tmlayer = $Game_2d/Board_2d/TileMapLayer
 #@onready var piece_man = $Game_2d/Piece_2d_Manager
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   _update_tmlayer()
   item_rect_changed.connect(_update_tmlayer)
