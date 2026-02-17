@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cgg65ymwya6wq"]
+[gd_scene format=3 uid="uid://cgg65ymwya6wq"]
 
 [ext_resource type="Texture2D" uid="uid://npalm2xf6l77" path="res://assets/black_128x128.png" id="1_1xhu3"]
 [ext_resource type="Script" uid="uid://cddp6edy4jvxx" path="res://game/board/board_2d.gd" id="1_x677m"]
@@ -32,13 +32,12 @@ sources/0 = SubResource("TileSetAtlasSource_x677m")
 sources/1 = SubResource("TileSetAtlasSource_om8fv")
 sources/2 = SubResource("TileSetAtlasSource_j8d55")
 
-[node name="Board_2d" type="Node2D"]
+[node name="Board_2d" type="Node2D" unique_id=2063414365]
 script = ExtResource("1_x677m")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-z_index = -10
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=507385911]
 tile_set = SubResource("TileSet_j8d55")
 script = ExtResource("2_irr5h")
 
-[node name="Highlights" type="Node2D" parent="."]
+[node name="Highlights" type="Node2D" parent="." unique_id=1844986752]
 script = ExtResource("6_6afcf")

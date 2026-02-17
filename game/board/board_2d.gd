@@ -18,6 +18,9 @@ func grid_to_local(grid_pos: Vector2i) -> Vector2:
 
 #func grid_to_global(grid_pos: Vector2i) -> Vector2:
   #return tmlayer.grid_to_global(grid_pos)
+#
+#func global_to_grid(global_pos: Vector2) -> Vector2i:
+  #return tmlayer.global_to_grid(global_pos)
 
-func global_to_grid(global_pos: Vector2) -> Vector2i:
-  return tmlayer.global_to_grid(global_pos)
+func local_to_grid(grid_pos: Vector2i) -> Vector2:
+  return tmlayer.local_to_grid(grid_pos)

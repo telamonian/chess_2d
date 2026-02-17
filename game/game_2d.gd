@@ -58,7 +58,7 @@ func _on_piece_drag_started(piece_2d: Piece2D):
 
 func _on_piece_drag_ended(piece_2d: Piece2D):
   board.highlights.remove_highlight()
-  var new_grid_pos = board.global_to_grid(piece_2d.position)
+  var new_grid_pos = board.local_to_grid(piece_2d.position)
   move_piece(piece_2d.engine_piece.grid_position, new_grid_pos)
 
 func _on_rook_castled(rook_grid_pos: Vector2i, new_rook_grid_pos: Vector2i):

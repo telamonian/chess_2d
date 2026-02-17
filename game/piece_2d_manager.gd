@@ -8,6 +8,10 @@ var pieces: Dictionary[Vector2i, Piece2D] = {}
 
 @onready var game = get_parent()
 
+func redraw():
+  for piece in pieces.values():
+    piece.move(game.board.grid_to_local(piece.grid_position))
+
 func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
   var piece: Piece2D = pieces[grid_pos]
 
@@ -18,8 +22,9 @@ func move_piece(grid_pos: Vector2i, new_grid_pos: Vector2i) -> void:
       remove_piece(new_grid_pos)
 
     pieces.erase(grid_pos)
-    piece.move(game.board.grid_to_local(new_grid_pos))
     pieces[new_grid_pos] = piece
+
+  piece.move(game.board.grid_to_local(new_grid_pos))
 
 func promote_piece(grid_pos: Vector2i, new_type: Enum.Ptype):
   var piece: Piece2D = pieces[grid_pos]
