@@ -236,10 +236,13 @@ func get_valid_passant_moves(piece: Piece) -> Array[Vector2i]:
   var valid_passant_moves: Array[Vector2i] = []
   if passantable_position != null:
     # there is a en passantable pawn
-    if piece.grid_position.y == passantable_position.y and absi(piece.grid_position.x - passantable_position.x) == 1:
-      # piece is next to the passantable pawn
-      var post_passant_pos = Vector2i(passantable_position.x, passantable_position.y + piece.pawn_dir)
-      valid_passant_moves.append(post_passant_pos)
+    var passantable_pawn = piece_man.pieces[passantable_position]
+    if piece.player_id != passantable_pawn.player_id:
+      # the piece and the passantable pawn do not belong to the same player. This is "needed" for an edge case that can occur if a player moves twice
+      if piece.grid_position.y == passantable_position.y and absi(piece.grid_position.x - passantable_position.x) == 1:
+        # piece is next to the passantable pawn
+        var post_passant_pos = Vector2i(passantable_position.x, passantable_position.y + piece.pawn_dir)
+        valid_passant_moves.append(post_passant_pos)
 
       # TODO: is checking for the emptiness of the post-passant position necessary? I'm pretty sure no
       #if post_passant_pos not in piece_man.pieces:
