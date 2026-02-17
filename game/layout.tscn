@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dtuu0d0rr0m7o" path="res://game/layout_controller_game_2d.gd" id="1_hn33d"]
 [ext_resource type="PackedScene" uid="uid://eviytf37l6wg" path="res://game/game_2d.tscn" id="1_it08q"]
-[ext_resource type="Texture2D" uid="uid://ybwh51t7hip6" path="res://assets/gear_icon.svg" id="2_hn33d"]
-[ext_resource type="Script" uid="uid://q5tyiq337eqo" path="res://game/settings_button.gd" id="3_6cmhv"]
+[ext_resource type="PackedScene" uid="uid://bhqcjjoalhrvq" path="res://game/settings/settings_button.tscn" id="3_it08q"]
 
 [node name="Layout" type="CanvasLayer" unique_id=1697652421]
 
@@ -25,15 +24,4 @@ script = ExtResource("1_hn33d")
 [node name="Game_2d" parent="AspectRatioContainer/Layout_Controller_Game_2d" unique_id=379377748 instance=ExtResource("1_it08q")]
 position = Vector2(-448.08005, 0)
 
-[node name="Settings_Button" type="Button" parent="." unique_id=16558162]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -157.0
-offset_top = 29.0
-offset_right = -29.0
-offset_bottom = 157.0
-grow_horizontal = 0
-icon = ExtResource("2_hn33d")
-expand_icon = true
-script = ExtResource("3_6cmhv")
+[node name="Settings_Button" parent="." unique_id=992240803 instance=ExtResource("3_it08q")]

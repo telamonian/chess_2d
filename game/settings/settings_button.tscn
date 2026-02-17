@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bhqcjjoalhrvq"]
+
+[ext_resource type="Texture2D" uid="uid://ybwh51t7hip6" path="res://assets/gear_icon.svg" id="1_o2xfe"]
+[ext_resource type="Script" uid="uid://q5tyiq337eqo" path="res://game/settings_button.gd" id="2_ifaq4"]
+
+[node name="Settings_Button" type="Button" unique_id=992240803]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -157.0
+offset_top = 29.0
+offset_right = -29.0
+offset_bottom = 157.0
+grow_horizontal = 0
+icon = ExtResource("1_o2xfe")
+expand_icon = true
+script = ExtResource("2_ifaq4")
